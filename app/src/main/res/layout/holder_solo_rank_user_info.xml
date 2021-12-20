@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.khs.riotapiproject.viewmodel.ui.UserInfoHolderViewModel" />
+            type="com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,14 +14,27 @@
         android:layout_height="wrap_content"
         android:padding="6dp">
 
+        <TextView
+            android:id="@+id/user_info_rank"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.rankFormat()}"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <ImageView
             android:id="@+id/user_info_image_view"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:imageFromUrl="@{model.userInfo.iconURL}"
+            android:layout_marginStart="6dp"
+            app:imageFromUrl="@{model.iconURL}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toEndOf="@+id/user_info_rank"/>
 
         <TextView
             android:id="@+id/user_level_text_view"
@@ -44,11 +57,11 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
-            android:text="@{model.userInfo.name}"
+            android:text="@{model.name}"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/user_win_ratio_text_view"
             app:layout_constraintStart_toEndOf="@id/user_level_text_view"
             app:layout_constraintTop_toTopOf="@id/user_info_image_view"
             app:layout_constraintBottom_toTopOf="@id/user_tier_text_view"/>
@@ -59,14 +72,25 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
-            android:text="@{model.userInfo.soloRankTier}"
+            android:text="@{model.soloRankTier}"
             android:textColor="@color/black"
             android:textSize="13sp"
             app:layout_constraintTop_toBottomOf="@id/user_name_text_view"
             app:layout_constraintBottom_toBottomOf="@id/user_info_image_view"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/user_win_ratio_text_view"
             app:layout_constraintStart_toEndOf="@id/user_level_text_view" />
 
+        <TextView
+            android:id="@+id/user_win_ratio_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.winRatioFormat()}"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

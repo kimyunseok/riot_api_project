@@ -3,17 +3,16 @@ package com.khs.riotapiproject.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.khs.riotapiproject.databinding.HolderUserInfoBinding
-import com.khs.riotapiproject.model.data.UserInfo
-import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderViewModel
+import com.khs.riotapiproject.databinding.HolderSoloRankUserInfoBinding
+import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 
-class SoloRankingRecyclerViewAdapter(private val itemList: List<UserInfo>): RecyclerView.Adapter<SoloRankingRecyclerViewAdapter.SoloRankingRecyclerViewHolder>() {
+class SoloRankingRecyclerViewAdapter(private val itemList: List<UserInfoHolderModel>): RecyclerView.Adapter<SoloRankingRecyclerViewAdapter.SoloRankingRecyclerViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): SoloRankingRecyclerViewHolder {
-        val viewDataBinding = HolderUserInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val viewDataBinding = HolderSoloRankUserInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SoloRankingRecyclerViewHolder(viewDataBinding)
     }
 
@@ -26,9 +25,9 @@ class SoloRankingRecyclerViewAdapter(private val itemList: List<UserInfo>): Recy
         return itemList.size
     }
 
-    inner class SoloRankingRecyclerViewHolder(private val viewDataBinding: HolderUserInfoBinding): RecyclerView.ViewHolder(viewDataBinding.root) {
-        fun bind(item: UserInfo) {
-            viewDataBinding.model = UserInfoHolderViewModel(item)
+    inner class SoloRankingRecyclerViewHolder(private val viewDataBinding: HolderSoloRankUserInfoBinding): RecyclerView.ViewHolder(viewDataBinding.root) {
+        fun bind(item: UserInfoHolderModel) {
+            viewDataBinding.model = item
         }
     }
 }

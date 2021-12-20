@@ -29,8 +29,11 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
                         message = response.message()
                     }
 
-                    response.body()?.entries?.sortWith(compareBy { it.leaguePoints })
-                    response.body()?.entries?.reverse()
+                    response.body()?.entries?.let {
+                        rankList ->
+                        rankList.sortWith(compareBy { it.leaguePoints })
+                        rankList.reverse()
+                    }
 
                     _rankingDataLiveData.postValue(response.body())
                 }

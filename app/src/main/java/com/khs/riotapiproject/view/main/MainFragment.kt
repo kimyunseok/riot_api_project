@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.riotapiproject.R
 import com.khs.riotapiproject.adapter.SoloRankingRecyclerViewAdapter
 import com.khs.riotapiproject.databinding.FragmentMainBinding
-import com.khs.riotapiproject.model.data.UserInfo
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.view.search.SearchActivity
 import com.khs.riotapiproject.viewmodel.aac.MainViewModel
 import com.khs.riotapiproject.viewmodel.repository.MainRepository
+import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import com.khs.riotapiproject.viewmodel.viewmodelfactory.MainRepositoryViewModelFactory
 
 class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
@@ -31,14 +31,23 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                 rankingData ->
             Log.d("Ranking Observe", "Ranking Data Hase Been Observed.")
             if(rankingData.code == 200) {
-                val itemList = mutableListOf<UserInfo>()
+                val itemList = mutableListOf<UserInfoHolderModel>()
 
-                for(idx in rankingData.entries.indices) {
-                    val userInfo = UserInfo(
+                val rankingLength = if(rankingData.entries.size > 10) {
+                    10
+                } else {
+                    rankingData.entries.size
+                }
+
+                for(idx in 0 until rankingLength) {
+                    val userInfo = UserInfoHolderModel(
                         context?.getString(R.string.icon_url).toString() + "1" + ".png",
                         rankingData.entries[idx].summonerName,
                         "챌린저 " + rankingData.entries[idx].leaguePoints + "점",
-                        123
+                        123,
+                        idx + 1,
+                        rankingData.entries[idx].wins,
+                        rankingData.entries[idx].losses
                     )
                     itemList.add(userInfo)
                 }
@@ -54,7 +63,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         viewModel.getRankingData()
     }
 
-    private fun setUpRecyclerView(itemList: List<UserInfo>) {
+    private fun setUpRecyclerView(itemList: List<UserInfoHolderModel>) {
         viewDataBinding.soloRankRecyclerView.apply {
             adapter = SoloRankingRecyclerViewAdapter(itemList)
             layoutManager = LinearLayoutManager(context)
