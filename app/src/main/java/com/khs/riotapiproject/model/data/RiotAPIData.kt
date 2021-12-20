@@ -39,3 +39,22 @@ data class RankingData (
         val hotStreak: Boolean,
     )
 }
+
+data class SummonerInfoData(
+    var code: Int,
+    var message: String,
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("accountId")
+    val accountId: String,
+    @SerializedName("puuid")
+    val puuid: String,
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("profileIconId")
+    val profileIconId: Int,
+    @SerializedName("revisionDate")
+    val revisionDate: Long,
+    @SerializedName("summonerLevel")
+    val summonerLevel: Int,
+)

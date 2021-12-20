@@ -7,4 +7,5 @@ class MainRepository {
     private val retrofit = retrofitService.create(RiotAPI::class.java)
 
     suspend fun getRanking() = retrofit.getRanking()
+    suspend fun getSummonerInfoById(encryptedSummonerId: String) = retrofit.getSummonerInfoById(encryptedSummonerId = encryptedSummonerId)
 }

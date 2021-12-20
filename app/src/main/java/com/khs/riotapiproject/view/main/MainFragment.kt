@@ -27,35 +27,20 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun setUpObserver() {
+        // Step 1. 랭킹 정보 불러오기
         viewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
                 rankingData ->
             Log.d("Ranking Observe", "Ranking Data Hase Been Observed.")
             if(rankingData.code == 200) {
-                val itemList = mutableListOf<UserInfoHolderModel>()
-
-                val rankingLength = if(rankingData.entries.size > 10) {
-                    10
-                } else {
-                    rankingData.entries.size
-                }
-
-                for(idx in 0 until rankingLength) {
-                    val userInfo = UserInfoHolderModel(
-                        context?.getString(R.string.icon_url).toString() + "1" + ".png",
-                        rankingData.entries[idx].summonerName,
-                        "챌린저 " + rankingData.entries[idx].leaguePoints + "점",
-                        123,
-                        idx + 1,
-                        rankingData.entries[idx].wins,
-                        rankingData.entries[idx].losses
-                    )
-                    itemList.add(userInfo)
-                }
-
-                setUpRecyclerView(itemList)
+                viewModel.getUserInfoListByIds()
             } else {
                 //exitProcess(0)
             }
+        }
+
+        // Step 2. 불러온 랭킹 정보의 id로 유저 정보(icon, Level) 불러온 후 리사이클러뷰 셋팅
+        viewModel.userInfoListLiveData.observe(viewLifecycleOwner) {
+            setUpRecyclerView(it)
         }
     }
 
