@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">RiotAPIProject</string>
-    <string name="development_api_key">{your_development_api_key}</string>
 
     <!-- Main -->
     <string name="input_searching_summoner_name">검색할 소환사명을 입력하세요.</string>
+    <string name="rotation_info">이번 주 로테이션</string>
     <string name="solo_rank_ranking">솔로랭크 랭킹</string>
+    <string name="icon_url">http://ddragon.leagueoflegends.com/cdn/10.18.1/img/profileicon/</string>
 
 </resources>

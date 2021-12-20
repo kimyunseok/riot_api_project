@@ -1,4 +1,4 @@
-package com.khs.riotapiproject.model.retrofit.data
+package com.khs.riotapiproject.model.data
 
 import com.google.gson.annotations.SerializedName
 
@@ -14,7 +14,7 @@ data class RankingData (
     @SerializedName("name")
     val name: String,
     @SerializedName("entries")
-    val entries: List<RankingDataDetail>,
+    val entries: MutableList<RankingDataDetail>,
 ) {
     data class RankingDataDetail(
         @SerializedName("summonerId")
@@ -22,20 +22,20 @@ data class RankingData (
         @SerializedName("summonerName")
         val summonerName: String,
         @SerializedName("leaguePoints")
-        val leaguePoints: String,
+        val leaguePoints: Int,
         @SerializedName("rank")
         val rank: String,
         @SerializedName("wins")
-        val wins: String,
+        val wins: Int,
         @SerializedName("losses")
-        val losses: String,
+        val losses: Int,
         @SerializedName("veteran")
-        val veteran: String,
+        val veteran: Boolean,
         @SerializedName("inactive")
-        val inactive: String,
+        val inactive: Boolean,
         @SerializedName("freshBlood")
-        val freshBlood: String,
+        val freshBlood: Boolean,
         @SerializedName("hotStreak")
-        val hotStreak: String,
+        val hotStreak: Boolean,
     )
 }

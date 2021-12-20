@@ -1,6 +1,7 @@
 package com.khs.riotapiproject.model.retrofit
 
-import com.khs.riotapiproject.model.retrofit.data.RankingData
+import com.khs.riotapiproject.model.data.RankingData
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 

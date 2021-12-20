@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="model"
+            type="com.khs.riotapiproject.viewmodel.ui.UserInfoHolderViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp">
+
+        <ImageView
+            android:id="@+id/user_info_image_view"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:imageFromUrl="@{model.userInfo.iconURL}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/user_level_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:gravity="center"
+            android:text="@{model.levelFormat()}"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_solid_royal_blue_circle"
+            app:layout_constraintTop_toBottomOf="@id/user_info_image_view"
+            app:layout_constraintBottom_toBottomOf="@id/user_info_image_view"
+            app:layout_constraintStart_toEndOf="@id/user_info_image_view"
+            app:layout_constraintEnd_toEndOf="@id/user_info_image_view"/>
+
+        <TextView
+            android:id="@+id/user_name_text_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
+            android:text="@{model.userInfo.name}"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/user_level_text_view"
+            app:layout_constraintTop_toTopOf="@id/user_info_image_view"
+            app:layout_constraintBottom_toTopOf="@id/user_tier_text_view"/>
+
+        <TextView
+            android:id="@+id/user_tier_text_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
+            android:text="@{model.userInfo.soloRankTier}"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/user_name_text_view"
+            app:layout_constraintBottom_toBottomOf="@id/user_info_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/user_level_text_view" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

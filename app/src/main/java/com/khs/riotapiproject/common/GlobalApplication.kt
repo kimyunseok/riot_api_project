@@ -2,6 +2,10 @@ package com.khs.riotapiproject.common
 
 import android.app.Application
 import android.util.Log
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
 import com.khs.riotapiproject.R
 import com.khs.riotapiproject.model.retrofit.InterceptorForHeader
 import okhttp3.OkHttpClient
@@ -13,17 +17,25 @@ class GlobalApplication: Application() {
     companion object {
         lateinit var mySharedPreferences: MySharedPreferences
         lateinit var retrofitService: Retrofit
+
+        //Glide URL -> ImageView 데이터바인딩에서 사용하기 위한 메서드
+        @BindingAdapter("imageFromUrl")
+        @JvmStatic
+        fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
+            if(!imageUrl.isNullOrEmpty()) {
+                Glide.with(view.context)
+                    .load(imageUrl)
+                    .thumbnail(Glide.with(view.context).load(CircularProgressDrawable(view.context)))
+                    .into(view)
+            }
+        }
+
     }
 
     override fun onCreate() {
         super.onCreate()
         mySharedPreferences = MySharedPreferences(applicationContext)
-        setDevelopmentAPIKey()
         setUpRetrofit()
-    }
-
-    private fun setDevelopmentAPIKey() {
-        mySharedPreferences.setString("developmentAPIKey", applicationContext.getString(R.string.development_api_key))
     }
 
     private fun setUpRetrofit() {
