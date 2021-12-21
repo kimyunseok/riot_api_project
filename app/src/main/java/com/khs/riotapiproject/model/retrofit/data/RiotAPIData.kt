@@ -1,4 +1,4 @@
-package com.khs.riotapiproject.model.data
+package com.khs.riotapiproject.model.retrofit.data
 
 import com.google.gson.annotations.SerializedName
 

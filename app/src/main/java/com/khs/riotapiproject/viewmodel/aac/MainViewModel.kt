@@ -4,7 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.khs.riotapiproject.model.data.RankingData
+import com.khs.riotapiproject.model.retrofit.data.RankingData
+import com.khs.riotapiproject.model.room.data.UserInfo
 import com.khs.riotapiproject.viewmodel.repository.MainRepository
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import kotlinx.coroutines.CoroutineScope
@@ -19,8 +20,8 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
     private val rankingDataDetailListValue: MutableList<RankingData.RankingDataDetail>
         get() = rankingDataLiveData.value?.entries?: mutableListOf()
 
-    private val _userInfoListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
-    val userInfoListLiveData: LiveData<List<UserInfoHolderModel>>
+    private val _userInfoListLiveData = MutableLiveData<List<UserInfo>>()
+    val userInfoListLiveData: LiveData<List<UserInfo>>
         get() = _userInfoListLiveData
 
     private val _rotationChampionListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
@@ -58,7 +59,7 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
     fun getUserInfoListByIds() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val rankList = mutableListOf<UserInfoHolderModel>()
+                val rankList = mutableListOf<UserInfo>()
 
                 val maxLength = if(rankingDataDetailListValue.size > 10) {
                     10
@@ -76,9 +77,9 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
                             it.code = response.code()
                             it.message = response.message()
 
-                            // 최신버전 정보는 https://ddragon.leagueoflegends.com/api/versions.json 에서 확인가능.
-                            val userInfoHolderModel = UserInfoHolderModel(
-                                "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${it.profileIconId}.png",
+                            val userInfo = UserInfo(
+                                0,
+                                it.profileIconId,
                                 it.name,
                                 "챌린저 ${rankingDataDetailListValue[idx].leaguePoints}점",
                                 it.summonerLevel,
@@ -87,7 +88,7 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
                                 rankingDataDetailListValue[idx].losses
                             )
 
-                            rankList.add(userInfoHolderModel)
+                            rankList.add(userInfo)
                         }
                     }
                 }
@@ -121,4 +122,5 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
             }
         }
     }
+
 }

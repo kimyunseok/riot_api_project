@@ -31,7 +31,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="6dp"
-            app:imageFromUrl="@{model.iconURL}"
+            app:imageFromUrl="@{model.iconID}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/user_info_rank"/>
@@ -110,6 +110,7 @@
             android:textSize="16sp"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:textAlignment="center"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

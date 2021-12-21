@@ -26,6 +26,19 @@
             android:name=".view.search.SearchActivity"
             android:exported="true">
         </activity>
+
+        <!-- 외부 저장소 사용을 위한 FileProvider auth 추가. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.khs.riotapiproject.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/path">
+
+            </meta-data>
+        </provider>
     </application>
 
 </manifest>
