@@ -17,6 +17,6 @@ class MainRepository {
 
     // SQLite
     fun getAllUserInfo() = userInfoDB.getAllUserInfo()
-    suspend fun clearUserInfo() = userInfoDB.clearUserInfo()
-    suspend fun insertUserInfo(userInfo: UserInfo) = userInfoDB.insertUserInfo(userInfo)
+    fun clearUserInfo() = userInfoDB.clearUserInfo()
+    fun insertUserInfo(userInfo: UserInfo) = userInfoDB.insertUserInfo(userInfo)
 }

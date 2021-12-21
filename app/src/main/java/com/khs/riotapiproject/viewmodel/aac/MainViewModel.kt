@@ -131,15 +131,11 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
     }
 
     fun clearUserInfoAtLocalDB() {
-        CoroutineScope(Dispatchers.IO).launch {
-            mainRepository.clearUserInfo()
-        }
+        mainRepository.clearUserInfo()
     }
 
     fun saveUserInfoAtLocalDB(userInfo: UserInfo) {
-        CoroutineScope(Dispatchers.IO).launch {
-            mainRepository.insertUserInfo(userInfo)
-        }
+        mainRepository.insertUserInfo(userInfo)
     }
 
     fun getRotationList() {

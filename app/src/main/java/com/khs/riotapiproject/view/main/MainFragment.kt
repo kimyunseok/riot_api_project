@@ -57,33 +57,31 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
             }
         }
 
-        // Step 3. 불러온 랭킹 정보의 id로 유저 정보(icon, Level) 불러온 후 리사이클러뷰 셋팅
         viewModel.userInfoListLiveData.observe(viewLifecycleOwner) {
+            // Step 3. 불러온 랭킹 정보의 id로 유저 정보(icon, Level) 불러온 후 리사이클러뷰 셋팅
             if(viewModel.roomDBLoad.not()) {
                 setUpRankingRecyclerView(it)
             } else {
                 refreshRankingRecyclerView(it)
             }
 
-            // Step 3. 불러온 랭킹 정보 이미지는 캐시에 저장하고 유저 정보는 Room DB에 저장
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.clearUserInfoAtLocalDB()
+            // Step 4. 불러온 랭킹 정보 이미지는 캐시에 저장하고 유저 정보는 Room DB에 저장
+            viewModel.clearUserInfoAtLocalDB()
 
-                for(data in it) {
-                    // 3 - 1. 유저 아이콘 캐싱
-                    context?.let { mContext ->
-                        if(ImageSaveUtil(mContext).checkAlreadySaved(data.getIconID()).not()) {
-                            ImageSaveUtil(mContext)
-                                .imageToCache(
-                                    data.getIconID().toString(),
-                                    mContext.getString(R.string.profile_icon_url)
-                                )
-                        }
+            for(data in it) {
+                // 4 - 1. 유저 아이콘 캐싱
+                context?.let { mContext ->
+                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.getIconID()).not()) {
+                        ImageSaveUtil(mContext)
+                            .imageToCache(
+                                data.getIconID().toString(),
+                                mContext.getString(R.string.profile_icon_url)
+                            )
                     }
-
-                    // 3 - 2. 유저 정보 Room DB에 저장(캐싱)
-                    viewModel.saveUserInfoAtLocalDB(data.userInfo)
                 }
+
+                // 4 - 2. 유저 정보 Room DB에 저장(캐싱)
+                viewModel.saveUserInfoAtLocalDB(data.userInfo)
             }
         }
     }
