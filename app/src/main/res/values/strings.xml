@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">RiotAPIProject</string>
+    <string name="lol_version">11.24.1</string>
 
     <!-- URL -->
     <string name="profile_icon_url">http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/</string>
+    <string name="champion_icon_url">http://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/</string>
+    <string name="champion_loading_image_url">http://ddragon.leagueoflegends.com/cdn/img/champion/loading/</string>
 
     <!-- Main -->
     <string name="input_searching_summoner_name">검색할 소환사명을 입력하세요.</string>

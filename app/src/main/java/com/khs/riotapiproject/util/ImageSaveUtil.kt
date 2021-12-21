@@ -6,6 +6,10 @@ import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
 import androidx.core.content.FileProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -17,17 +21,19 @@ import java.net.URL
 class ImageSaveUtil(val context: Context) {
 
     fun imageToCache(nameOrID: String, url: String) {
-        // 최신버전 정보는 https://ddragon.leagueoflegends.com/api/versions.json 에서 확인가능.
-        val iconURL =  "${url}${nameOrID}.png"
-        try {
-            val inputStream = URL(iconURL).openStream()
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream.close()
-            imgToCacheAndGetURI(nameOrID, bitmap)
-        } catch (e: ConnectException) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        CoroutineScope(Dispatchers.IO).launch {
+            // 최신버전 정보는 https://ddragon.leagueoflegends.com/api/versions.json 에서 확인가능.
+            val iconURL =  "${url}${nameOrID}.png"
+            try {
+                val inputStream = URL(iconURL).openStream()
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream.close()
+                imgToCacheAndGetURI(nameOrID, bitmap)
+            } catch (e: ConnectException) {
+                e.printStackTrace()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

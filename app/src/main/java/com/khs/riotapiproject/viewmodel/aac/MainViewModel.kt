@@ -4,14 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import com.khs.riotapiproject.common.GlobalApplication
+import com.khs.riotapiproject.model.retrofit.data.ChampionData
 import com.khs.riotapiproject.model.retrofit.data.RankingData
+import com.khs.riotapiproject.model.room.data.ChampionInfo
 import com.khs.riotapiproject.model.room.data.UserInfo
 import com.khs.riotapiproject.viewmodel.repository.MainRepository
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.net.ConnectException
 
 class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
@@ -35,9 +39,9 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
 
     var roomDBLoad = false
 
-    // 1분에 한 번씩 데이터 가져오기 가능.
+    // 2분에 한 번씩 데이터 가져오기 가능.
     val checkMinTimeForGetData: Boolean by lazy {
-        System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 60000
+        System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 120000
     }
 
     fun getRankingData() {
@@ -159,4 +163,42 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
         }
     }
 
+    fun getAllChampionData(version: String) {
+        GlobalApplication.mySharedPreferences.setString("lolVersion", version)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            mainRepository.getAllChampionData().let {
+                    response ->
+                Log.d("MainViewModel", "Get All Champion DATA API. code : ${response.code()}, message : ${response.message()}")
+
+                response.body()?.let {
+                    it.code = response.code()
+                    it.message = response.message()
+
+                    val allChampionDataJson = JSONObject(Gson().toJson(it.data))
+
+                    val championList = ChampionData.Champion::class.java.declaredFields
+
+                    for(champion in championList) {
+                        val championName = champion.name
+                        val championDataJson = allChampionDataJson.getJSONObject(championName)
+
+                        val championInfo = ChampionInfo(
+                            0,
+                            championDataJson.get("version").toString(),
+                            championDataJson.get("id").toString(),
+                            championDataJson.get("key").toString(),
+                            championDataJson.get("name").toString(),
+                            championDataJson.get("title").toString(),
+                            championDataJson.get("blurb").toString(),
+                            false
+                        )
+
+                        mainRepository.insertChampionInfo(championInfo)
+                    }
+
+                }
+            }
+        }
+    }
 }

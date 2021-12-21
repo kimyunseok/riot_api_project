@@ -4,11 +4,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.khs.riotapiproject.common.GlobalApplication
+import com.khs.riotapiproject.model.room.data.ChampionInfo
 import com.khs.riotapiproject.model.room.data.UserInfo
 
-@Database(entities = [UserInfo::class], version = 1)
+@Database(entities = [UserInfo::class, ChampionInfo::class], version = 1)
 abstract class AppDataBase: RoomDatabase() {
     abstract fun userInfoDAO(): UserInfoDAO
+    abstract fun championInfoDAO(): ChampionInfoDAO
 
     companion object {
         val roomDBInstance = Room.databaseBuilder(

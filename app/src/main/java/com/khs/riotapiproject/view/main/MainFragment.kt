@@ -1,12 +1,14 @@
 package com.khs.riotapiproject.view.main
 
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.riotapiproject.R
 import com.khs.riotapiproject.adapter.SoloRankingRecyclerViewAdapter
+import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.databinding.FragmentMainBinding
 import com.khs.riotapiproject.util.ImageSaveUtil
 import com.khs.riotapiproject.util.UserInfoHolderModelDiffUtil
@@ -16,9 +18,6 @@ import com.khs.riotapiproject.viewmodel.aac.MainViewModel
 import com.khs.riotapiproject.viewmodel.repository.MainRepository
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import com.khs.riotapiproject.viewmodel.viewmodelfactory.MainRepositoryViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     override val layoutID: Int
@@ -28,12 +27,22 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
     lateinit var rankingRecyclerViewAdapter: SoloRankingRecyclerViewAdapter
 
+    // Lol 버전 바뀌었을 때만 전체 데이터 가져옴.
+    private val isVersionChanged: Boolean by lazy {
+        context?.getString(R.string.lol_version) != GlobalApplication.mySharedPreferences.getString("lolVersion", "NO_VERSION")
+    }
+
     override fun init() {
         setUpBtnListener()
         setUpObserver()
         getRankingDataAtLocalDB()
 
-        //최소 데이터갱신 1분.
+        //버전 바뀌었을 때만 데이터 Json으로 가져옴.
+        if(isVersionChanged) {
+            viewModel.getAllChampionData(context?.getString(R.string.lol_version).toString())
+        }
+
+        //최소 데이터갱신 2분.
         if(viewModel.checkMinTimeForGetData) {
             getRankingData()
             getRotationList()
@@ -95,7 +104,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun getRotationList() {
-
+        viewModel.getRotationList()
     }
 
     private fun setUpRankingRecyclerView(itemList: List<UserInfoHolderModel>) {

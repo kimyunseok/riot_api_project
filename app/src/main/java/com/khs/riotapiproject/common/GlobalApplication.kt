@@ -11,7 +11,6 @@ import com.khs.riotapiproject.util.ImageSaveUtil
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -20,7 +19,7 @@ class GlobalApplication: Application() {
         lateinit var globalApplication: GlobalApplication
         lateinit var mySharedPreferences: MySharedPreferences
         lateinit var riotAPIService: Retrofit
-        lateinit var DDragonAPIService: Retrofit
+        lateinit var dDragonAPIService: Retrofit
 
         val okHttpClient = OkHttpClient
             .Builder()
@@ -31,12 +30,12 @@ class GlobalApplication: Application() {
             .build()
 
         //Glide URL -> ImageView 데이터바인딩에서 사용하기 위한 메서드
-        @BindingAdapter("imageFromUrl")
+        @BindingAdapter("imgName", "imgURL", requireAll = false)
         @JvmStatic
-        fun bindImageFromUrl(view: ImageView, profileIconId: Int) {
-            if(ImageSaveUtil(view.context).checkAlreadySaved(profileIconId)) {
+        fun bindImageFromUrl(view: ImageView, imgName: Int, imgURL: String) {
+            if(ImageSaveUtil(view.context).checkAlreadySaved(imgName)) {
                 // 저장돼 있는 이미지라면 캐시에서 불러온다.
-                val fileName = "${profileIconId}.png"
+                val fileName = "${imgName}.png"
                 val cachePath = "${view.context.cacheDir}/file"
                 val dir = File(cachePath)
                 val fileItem = File("$dir/$fileName")
@@ -47,7 +46,7 @@ class GlobalApplication: Application() {
                     .into(view)
             } else {
                 // 저장 안된 이미지라면 웹에서 불러옴.
-                val iconURL =  view.context.getString(R.string.profile_icon_url) + "${profileIconId}.png"
+                val iconURL =  imgURL + "${imgName}.png"
                 Glide.with(view.context)
                     .load(iconURL)
                     .thumbnail(Glide.with(view.context).load(CircularProgressDrawable(view.context)))
@@ -81,8 +80,8 @@ class GlobalApplication: Application() {
     private fun setUpDDragonAPIService() {
         val dDragonURL = "https://ddragon.leagueoflegends.com/"
 
-        DDragonAPIService = Retrofit.Builder().baseUrl(dDragonURL).client(okHttpClient)
-            .addConverterFactory(ScalarsConverterFactory.create())
+        dDragonAPIService = Retrofit.Builder().baseUrl(dDragonURL).client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 }
