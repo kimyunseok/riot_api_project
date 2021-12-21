@@ -2,6 +2,7 @@ package com.khs.riotapiproject.model.data
 
 import com.google.gson.annotations.SerializedName
 
+// 랭킹 유저 정보 클래스
 data class RankingData (
     var code: Int,
     var message: String,
@@ -14,7 +15,7 @@ data class RankingData (
     @SerializedName("name")
     val name: String,
     @SerializedName("entries")
-    val entries: MutableList<RankingDataDetail>,
+    val entries: MutableList<RankingDataDetail>
 ) {
     data class RankingDataDetail(
         @SerializedName("summonerId")
@@ -36,10 +37,11 @@ data class RankingData (
         @SerializedName("freshBlood")
         val freshBlood: Boolean,
         @SerializedName("hotStreak")
-        val hotStreak: Boolean,
+        val hotStreak: Boolean
     )
 }
 
+// 소환사 정보 클래스(By SummonerID)
 data class SummonerInfoData(
     var code: Int,
     var message: String,
@@ -56,5 +58,35 @@ data class SummonerInfoData(
     @SerializedName("revisionDate")
     val revisionDate: Long,
     @SerializedName("summonerLevel")
-    val summonerLevel: Int,
+    val summonerLevel: Int
+)
+
+data class ChampionInfoData(
+    var code: Int,
+    var message: String,
+    @SerializedName("type")
+    val type: String,
+    @SerializedName("format")
+    val format: String,
+    @SerializedName("version")
+    val version: String,
+//    @SerializedName("data")
+//    val data: List<ChampionInfoDataDetail>
+
+) {
+//    data class ChampionInfoDataDetail(
+//
+//    )
+}
+
+// 로테이션 챔피언 정보
+data class RotationChampionData(
+    var code: Int,
+    var message: String,
+    @SerializedName("freeChampionIds")
+    val freeChampionIds: List<Int>,
+    @SerializedName("freeChampionIdsForNewPlayers")
+    val freeChampionIdsForNewPlayers: List<Int>,
+    @SerializedName("maxNewPlayerLevel")
+    val maxNewPlayerLevel: Int
 )

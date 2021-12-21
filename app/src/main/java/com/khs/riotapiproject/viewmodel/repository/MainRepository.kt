@@ -8,4 +8,5 @@ class MainRepository {
 
     suspend fun getRanking() = retrofit.getRanking()
     suspend fun getSummonerInfoById(encryptedSummonerId: String) = retrofit.getSummonerInfoById(encryptedSummonerId = encryptedSummonerId)
+    suspend fun getRotationChampionList() = retrofit.getRotationChampionList()
 }

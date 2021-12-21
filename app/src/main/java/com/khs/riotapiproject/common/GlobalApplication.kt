@@ -1,7 +1,6 @@
 package com.khs.riotapiproject.common
 
 import android.app.Application
-import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -35,7 +34,12 @@ class GlobalApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         mySharedPreferences = MySharedPreferences(applicationContext)
+        setDevelopmentAPIKey()
         setUpRetrofit()
+    }
+
+    private fun setDevelopmentAPIKey() {
+        mySharedPreferences.setString("developmentAPIKey", applicationContext.getString(R.string.development_api_key))
     }
 
     private fun setUpRetrofit() {

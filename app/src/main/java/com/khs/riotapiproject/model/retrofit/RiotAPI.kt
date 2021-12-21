@@ -1,8 +1,8 @@
 package com.khs.riotapiproject.model.retrofit
 
 import com.khs.riotapiproject.model.data.RankingData
+import com.khs.riotapiproject.model.data.RotationChampionData
 import com.khs.riotapiproject.model.data.SummonerInfoData
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,4 +13,7 @@ interface RiotAPI {
 
     @GET("/lol/summoner/v4/summoners/{encryptedSummonerId}")
     suspend fun getSummonerInfoById(@Path("encryptedSummonerId") encryptedSummonerId: String): Response<SummonerInfoData>
+
+    @GET("/lol/platform/v3/champion-rotations")
+    suspend fun getRotationChampionList(): Response<RotationChampionData>
 }

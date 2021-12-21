@@ -1,7 +1,7 @@
 package com.khs.riotapiproject.view.main
 
 import android.content.Intent
-import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.riotapiproject.R
@@ -30,11 +30,11 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         // Step 1. 랭킹 정보 불러오기
         viewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
                 rankingData ->
-            Log.d("Ranking Observe", "Ranking Data Hase Been Observed.")
             if(rankingData.code == 200) {
                 viewModel.getUserInfoListByIds()
             } else {
-                //exitProcess(0)
+                //Can't Get Ranking List
+                Toast.makeText(context, context?.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -45,6 +45,10 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun getRankingData() {
+        viewModel.getRankingData()
+    }
+
+    private fun getRotationList() {
         viewModel.getRankingData()
     }
 
