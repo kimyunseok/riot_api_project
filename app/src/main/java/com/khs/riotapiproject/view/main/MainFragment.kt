@@ -95,7 +95,6 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         viewModel.rotationChampionListLiveData.observe(viewLifecycleOwner) {
             val championList = it.toMutableList()
             championList.sortWith(compareBy { data -> data.championInfo.championName })
-            championList.reverse()
             setUpRotationChampionRecyclerView(championList)
         }
     }
@@ -123,7 +122,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     private fun setUpRotationChampionRecyclerView(itemList: List<RotationChampionHolderModel>) {
         viewDataBinding.rotationRecyclerView.apply {
             adapter = RotationChampionRecyclerViewAdapter(itemList)
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
     }
 
