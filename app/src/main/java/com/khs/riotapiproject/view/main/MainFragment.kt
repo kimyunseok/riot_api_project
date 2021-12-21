@@ -95,6 +95,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         viewModel.rotationChampionListLiveData.observe(viewLifecycleOwner) {
             val championList = it.toMutableList()
             championList.sortWith(compareBy { data -> data.championInfo.championName })
+            championList.reverse()
             setUpRotationChampionRecyclerView(championList)
         }
     }
