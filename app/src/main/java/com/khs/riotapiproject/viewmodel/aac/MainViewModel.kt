@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.khs.riotapiproject.R
 import com.khs.riotapiproject.model.data.RankingData
-import com.khs.riotapiproject.model.data.SummonerInfoData
 import com.khs.riotapiproject.viewmodel.repository.MainRepository
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import kotlinx.coroutines.CoroutineScope
@@ -69,6 +67,8 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
                 for(idx in 0 until maxLength) {
                     mainRepository.getSummonerInfoById(rankingDataDetailListValue[idx].summonerId).let {
                             response ->
+
+                        Log.d("MainViewModel", "Get User Info API. code : ${response.code()}, message : ${response.message()}")
 
                         response.body()?.let {
                             it.code = response.code()

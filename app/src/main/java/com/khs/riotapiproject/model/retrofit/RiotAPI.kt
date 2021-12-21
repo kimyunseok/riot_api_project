@@ -2,7 +2,6 @@ package com.khs.riotapiproject.model.retrofit
 
 import com.khs.riotapiproject.model.data.RankingData
 import com.khs.riotapiproject.model.data.SummonerInfoData
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
