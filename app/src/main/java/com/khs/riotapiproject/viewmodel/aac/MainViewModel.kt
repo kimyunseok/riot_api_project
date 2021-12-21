@@ -37,7 +37,7 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
 
     // 1분에 한 번씩 데이터 가져오기 가능.
     val checkMinTimeForGetData: Boolean by lazy {
-        System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 6000
+        System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 60000
     }
 
     fun getRankingData() {
