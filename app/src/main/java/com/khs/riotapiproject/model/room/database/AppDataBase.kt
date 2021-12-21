@@ -8,6 +8,7 @@ import com.khs.riotapiproject.model.room.data.UserInfo
 
 @Database(entities = [UserInfo::class], version = 1)
 abstract class AppDataBase: RoomDatabase() {
+    abstract fun userInfoDAO(): UserInfoDAO
 
     companion object {
         val roomDBInstance = Room.databaseBuilder(

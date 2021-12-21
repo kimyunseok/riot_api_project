@@ -18,7 +18,7 @@ class ImageSaveUtil(val context: Context) {
 
     fun imageToCache(nameOrID: String, url: String) {
         // 최신버전 정보는 https://ddragon.leagueoflegends.com/api/versions.json 에서 확인가능.
-        val iconURL =  "${url}/${nameOrID}.png"
+        val iconURL =  "${url}${nameOrID}.png"
         try {
             val inputStream = URL(iconURL).openStream()
             val bitmap = BitmapFactory.decodeStream(inputStream)

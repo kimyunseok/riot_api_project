@@ -10,6 +10,9 @@ interface UserInfoDAO {
     @Insert
     suspend fun insertUserInfo(userInfo: UserInfo)
 
+    @Query("SELECT * FROM UserInfo")
+    fun getAllUserInfo(): List<UserInfo>
+
     @Query("DELETE FROM UserInfo")
     suspend fun clearUserInfo()
 }

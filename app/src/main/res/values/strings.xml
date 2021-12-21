@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">RiotAPIProject</string>
 
+    <!-- URL -->
+    <string name="profile_icon_url">http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/</string>
+
     <!-- Main -->
     <string name="input_searching_summoner_name">검색할 소환사명을 입력하세요.</string>
     <string name="rotation_info">이번 주 로테이션</string>

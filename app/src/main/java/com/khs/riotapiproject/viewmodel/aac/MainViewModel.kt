@@ -20,13 +20,19 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
     private val rankingDataDetailListValue: MutableList<RankingData.RankingDataDetail>
         get() = rankingDataLiveData.value?.entries?: mutableListOf()
 
-    private val _userInfoListLiveData = MutableLiveData<List<UserInfo>>()
-    val userInfoListLiveData: LiveData<List<UserInfo>>
+    private val _userInfoAtLocalDBListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
+    val userInfoAtLocalDBListLiveData: LiveData<List<UserInfoHolderModel>>
+        get() = _userInfoAtLocalDBListLiveData
+
+    private val _userInfoListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
+    val userInfoListLiveData: LiveData<List<UserInfoHolderModel>>
         get() = _userInfoListLiveData
 
     private val _rotationChampionListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
     val rotationChampionListLiveData: LiveData<List<UserInfoHolderModel>>
         get() = rotationChampionListLiveData
+
+    var roomDBLoad = false
 
     fun getRankingData() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -59,7 +65,7 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
     fun getUserInfoListByIds() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val rankList = mutableListOf<UserInfo>()
+                val rankList = mutableListOf<UserInfoHolderModel>()
 
                 val maxLength = if(rankingDataDetailListValue.size > 10) {
                     10
@@ -88,7 +94,7 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
                                 rankingDataDetailListValue[idx].losses
                             )
 
-                            rankList.add(userInfo)
+                            rankList.add(UserInfoHolderModel(userInfo))
                         }
                     }
                 }
@@ -99,6 +105,33 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    fun getRankingDataAtLocalDB() {
+        mainRepository.getAllUserInfo().let {
+            val rankList = mutableListOf<UserInfoHolderModel>()
+            for(userInfo in it) {
+                rankList.add(UserInfoHolderModel(userInfo))
+            }
+            if(rankList.isNotEmpty()) {
+                roomDBLoad = true
+            }
+            rankList.sortWith(compareBy { userModel -> userModel.userInfo.rank })
+
+            _userInfoAtLocalDBListLiveData.postValue(rankList)
+        }
+    }
+
+    fun clearUserInfoAtLocalDB() {
+        CoroutineScope(Dispatchers.IO).launch {
+            mainRepository.clearUserInfo()
+        }
+    }
+
+    fun saveUserInfoAtLocalDB(userInfo: UserInfo) {
+        CoroutineScope(Dispatchers.IO).launch {
+            mainRepository.insertUserInfo(userInfo)
         }
     }
 

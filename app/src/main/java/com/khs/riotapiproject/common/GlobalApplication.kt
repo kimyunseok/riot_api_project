@@ -38,7 +38,7 @@ class GlobalApplication: Application() {
                     .into(view)
             } else {
                 // 저장 안된 이미지라면 웹에서 불러옴.
-                val iconURL =  "http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/${profileIconId}.png"
+                val iconURL =  view.context.getString(R.string.profile_icon_url) + "${profileIconId}.png"
                 Glide.with(view.context)
                     .load(iconURL)
                     .thumbnail(Glide.with(view.context).load(CircularProgressDrawable(view.context)))

@@ -2,7 +2,7 @@ package com.khs.riotapiproject.viewmodel.ui
 
 import com.khs.riotapiproject.model.room.data.UserInfo
 
-class UserInfoHolderModel(private val userInfo: UserInfo) {
+class UserInfoHolderModel(val userInfo: UserInfo) {
 
     fun levelFormat(): String {
         return "Lv. ${userInfo.level}"
