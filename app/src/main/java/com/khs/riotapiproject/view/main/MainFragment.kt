@@ -93,6 +93,20 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         }
 
         viewModel.rotationChampionListLiveData.observe(viewLifecycleOwner) {
+
+            //이미지 캐싱
+            for(data in it) {
+                context?.let { mContext ->
+                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.championInfo.championId).not()) {
+                        ImageSaveUtil(mContext)
+                            .imageToCache(
+                                data.championInfo.championId,
+                                mContext.getString(R.string.champion_icon_url)
+                            )
+                    }
+                }
+            }
+
             val championList = it.toMutableList()
             championList.sortWith(compareBy { data -> data.championInfo.championName })
             setUpRotationChampionRecyclerView(championList)

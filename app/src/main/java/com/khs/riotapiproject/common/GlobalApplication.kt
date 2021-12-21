@@ -33,20 +33,19 @@ class GlobalApplication: Application() {
         @BindingAdapter("imageName", "imageURL", requireAll = true)
         @JvmStatic
         fun bindImageFromUrl(view: ImageView, imageName: String, imageURL: String) {
+            val iconURL =  imageURL + "${imageName}.png"
             if(ImageSaveUtil(view.context).checkAlreadySaved(imageName)) {
-                // 저장돼 있는 이미지라면 캐시에서 불러온다.
+                // 저장돼 있는 이미지라면 캐시에서 미리보기
                 val fileName = "${imageName}.png"
                 val cachePath = "${view.context.cacheDir}/file"
                 val dir = File(cachePath)
                 val fileItem = File("$dir/$fileName")
-
                 Glide.with(view.context)
-                    .load(fileItem)
-                    .thumbnail(Glide.with(view.context).load(CircularProgressDrawable(view.context)))
+                    .load(iconURL)
+                    .thumbnail(Glide.with(view.context).load(fileItem))
                     .into(view)
             } else {
-                // 저장 안된 이미지라면 웹에서 불러옴.
-                val iconURL =  imageURL + "${imageName}.png"
+                // 저장 안된 이미지라면 로딩창
                 Glide.with(view.context)
                     .load(iconURL)
                     .thumbnail(Glide.with(view.context).load(CircularProgressDrawable(view.context)))
