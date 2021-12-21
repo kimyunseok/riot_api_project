@@ -32,7 +32,12 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         setUpBtnListener()
         setUpObserver()
         getRankingDataAtLocalDB()
-        getRankingData()
+
+        //최소 데이터갱신 1분.
+        if(viewModel.checkMinTimeForGetData) {
+            getRankingData()
+            getRotationList()
+        }
     }
 
     private fun setUpObserver() {
@@ -92,7 +97,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun getRotationList() {
-        viewModel.getRankingData()
+
     }
 
     private fun setUpRankingRecyclerView(itemList: List<UserInfoHolderModel>) {

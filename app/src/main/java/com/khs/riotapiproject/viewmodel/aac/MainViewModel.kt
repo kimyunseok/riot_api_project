@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.model.retrofit.data.RankingData
 import com.khs.riotapiproject.model.room.data.UserInfo
 import com.khs.riotapiproject.viewmodel.repository.MainRepository
@@ -34,7 +35,13 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
 
     var roomDBLoad = false
 
+    // 1분에 한 번씩 데이터 가져오기 가능.
+    val checkMinTimeForGetData: Boolean by lazy {
+        System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 6000
+    }
+
     fun getRankingData() {
+        GlobalApplication.mySharedPreferences.setLong("getRankingDataTime", System.currentTimeMillis())
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 mainRepository.getRanking().let {

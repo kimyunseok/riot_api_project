@@ -12,7 +12,15 @@ class MySharedPreferences(context: Context) {
         return mySharedPreferences.getString(key, defaultValue).toString()
     }
 
+    fun getLong(key: String, defaultValue: Long): Long {
+        return mySharedPreferences.getLong(key, defaultValue)
+    }
+
     fun setString(key: String, value: String) {
         mySharedPreferences.edit().putString(key, value).apply()
+    }
+
+    fun setLong(key: String, value: Long) {
+        mySharedPreferences.edit().putLong(key, value).apply()
     }
 }
