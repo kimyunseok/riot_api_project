@@ -22,8 +22,10 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
     private val _userInfoListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
     val userInfoListLiveData: LiveData<List<UserInfoHolderModel>>
         get() = _userInfoListLiveData
-    val userInfoListValue: List<UserInfoHolderModel>
-        get() = userInfoListLiveData.value?: mutableListOf()
+
+    private val _rotationChampionListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
+    val rotationChampionListLiveData: LiveData<List<UserInfoHolderModel>>
+        get() = rotationChampionListLiveData
 
     fun getRankingData() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -91,6 +93,27 @@ class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
                 }
 
                 _userInfoListLiveData.postValue(rankList)
+            } catch (e: ConnectException) {
+                e.printStackTrace()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getRotationList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                mainRepository.getRotationChampionList().let {
+                    response ->
+
+                    Log.d("MainViewModel", "Get Rotation Champion API. code : ${response.code()}, message : ${response.message()}")
+
+                    response.body()?.let {
+                        it.code = response.code()
+                        it.message = response.message()
+                    }
+                }
             } catch (e: ConnectException) {
                 e.printStackTrace()
             } catch (e: java.lang.Exception) {
