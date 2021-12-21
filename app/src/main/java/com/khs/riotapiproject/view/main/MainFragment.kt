@@ -76,7 +76,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                         }
                     }
 
-                    // 3 - 2. 유저 정보 Room DB에 저장
+                    // 3 - 2. 유저 정보 Room DB에 저장(캐싱)
                     viewModel.saveUserInfoAtLocalDB(data.userInfo)
                 }
             }
