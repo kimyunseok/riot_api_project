@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.khs.riotapiproject.R"/>
+
+        <variable
+            name="model"
+            type="com.khs.riotapiproject.viewmodel.ui.RotationChampionHolderModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="6dp">
+
+        <ImageView
+            android:id="@+id/champion_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:imageName="@{model.championInfo.championId}"
+            app:imageURL="@{context.getString(R.string.champion_icon_url)}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

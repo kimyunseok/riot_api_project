@@ -8,7 +8,6 @@ import android.net.Uri
 import androidx.core.content.FileProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
@@ -75,8 +74,8 @@ class ImageSaveUtil(val context: Context) {
         return FileProvider.getUriForFile(context.applicationContext, "com.khs.riotapiproject.fileprovider", fileItem)
     }
 
-    fun checkAlreadySaved(profileIconId: Int): Boolean {
-        val fileName = "${profileIconId}.png"
+    fun checkAlreadySaved(nameOrID: String): Boolean {
+        val fileName = "${nameOrID}.png"
         val cachePath = "${context.cacheDir}/file"
         val dir = File(cachePath)
 

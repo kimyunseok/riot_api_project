@@ -2,11 +2,13 @@ package com.khs.riotapiproject.view.main
 
 import android.content.Intent
 import android.util.Log
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.riotapiproject.R
+import com.khs.riotapiproject.adapter.RotationChampionRecyclerViewAdapter
 import com.khs.riotapiproject.adapter.SoloRankingRecyclerViewAdapter
 import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.databinding.FragmentMainBinding
@@ -16,6 +18,7 @@ import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.view.search.SearchActivity
 import com.khs.riotapiproject.viewmodel.aac.MainViewModel
 import com.khs.riotapiproject.viewmodel.repository.MainRepository
+import com.khs.riotapiproject.viewmodel.ui.RotationChampionHolderModel
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import com.khs.riotapiproject.viewmodel.viewmodelfactory.MainRepositoryViewModelFactory
 
@@ -27,26 +30,16 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
     lateinit var rankingRecyclerViewAdapter: SoloRankingRecyclerViewAdapter
 
-    // Lol 버전 바뀌었을 때만 전체 데이터 가져옴.
-    private val isVersionChanged: Boolean by lazy {
-        context?.getString(R.string.lol_version) != GlobalApplication.mySharedPreferences.getString("lolVersion", "NO_VERSION")
-    }
-
     override fun init() {
         setUpBtnListener()
         setUpObserver()
         getRankingDataAtLocalDB()
 
         //버전 바뀌었을 때만 데이터 Json으로 가져옴.
-        if(isVersionChanged) {
-            viewModel.getAllChampionData(context?.getString(R.string.lol_version).toString())
-        }
+        viewModel.getAllChampionData(context?.getString(R.string.lol_version).toString())
 
         //최소 데이터갱신 2분.
-        if(viewModel.checkMinTimeForGetData) {
-            getRankingData()
-            getRotationList()
-        }
+        getRankingData()
     }
 
     private fun setUpObserver() {
@@ -80,7 +73,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
             for(data in it) {
                 // 4 - 1. 유저 아이콘 캐싱
                 context?.let { mContext ->
-                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.getIconID()).not()) {
+                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.getIconID().toString()).not()) {
                         ImageSaveUtil(mContext)
                             .imageToCache(
                                 data.getIconID().toString(),
@@ -92,6 +85,17 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                 // 4 - 2. 유저 정보 Room DB에 저장(캐싱)
                 viewModel.saveUserInfoAtLocalDB(data.userInfo)
             }
+        }
+
+        // 모든 챔피언 정보 받아오면 로테이션 챔피언 정보 받아옴.
+        viewModel.allChampionListLiveData.observe(viewLifecycleOwner) {
+            getRotationList()
+        }
+
+        viewModel.rotationChampionListLiveData.observe(viewLifecycleOwner) {
+            val championList = it.toMutableList()
+            championList.sortWith(compareBy { data -> data.championInfo.championName })
+            setUpRotationChampionRecyclerView(championList)
         }
     }
 
@@ -112,6 +116,13 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         viewDataBinding.soloRankRecyclerView.apply {
             adapter = rankingRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun setUpRotationChampionRecyclerView(itemList: List<RotationChampionHolderModel>) {
+        viewDataBinding.rotationRecyclerView.apply {
+            adapter = RotationChampionRecyclerViewAdapter(itemList)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
         }
     }
 

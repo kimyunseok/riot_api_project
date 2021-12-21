@@ -1,6 +1,6 @@
 package com.khs.riotapiproject.viewmodel.ui
 
-class RotationChampionHolderModel(val imageURL: String,
-                                  val championName: String,
-                                  val championID: Long) {
+import com.khs.riotapiproject.model.room.data.ChampionInfo
+
+class RotationChampionHolderModel(val championInfo: ChampionInfo) {
 }
