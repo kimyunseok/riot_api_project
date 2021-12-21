@@ -1,7 +1,6 @@
 package com.khs.riotapiproject.common
 
 import android.app.Application
-import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -12,6 +11,7 @@ import com.khs.riotapiproject.util.ImageSaveUtil
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -19,7 +19,16 @@ class GlobalApplication: Application() {
     companion object {
         lateinit var globalApplication: GlobalApplication
         lateinit var mySharedPreferences: MySharedPreferences
-        lateinit var retrofitService: Retrofit
+        lateinit var riotAPIService: Retrofit
+        lateinit var DDragonAPIService: Retrofit
+
+        val okHttpClient = OkHttpClient
+            .Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .addNetworkInterceptor(InterceptorForHeader())
+            .build()
 
         //Glide URL -> ImageView 데이터바인딩에서 사용하기 위한 메서드
         @BindingAdapter("imageFromUrl")
@@ -53,26 +62,27 @@ class GlobalApplication: Application() {
         globalApplication = this
         mySharedPreferences = MySharedPreferences(applicationContext)
         setDevelopmentAPIKey()
-        setUpRetrofit()
+        setUpRiotAPIService()
+        setUpDDragonAPIService()
     }
 
     private fun setDevelopmentAPIKey() {
         mySharedPreferences.setString("developmentAPIKey", applicationContext.getString(R.string.development_api_key))
     }
 
-    private fun setUpRetrofit() {
-        val baseURL = "https://kr.api.riotgames.com/"
+    private fun setUpRiotAPIService() {
+        val riotURL = "https://kr.api.riotgames.com/"
 
-        val okHttpClient = OkHttpClient
-            .Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .addNetworkInterceptor(InterceptorForHeader())
-            .build()
-
-        retrofitService = Retrofit.Builder().baseUrl(baseURL).client(okHttpClient)
+        riotAPIService = Retrofit.Builder().baseUrl(riotURL).client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private fun setUpDDragonAPIService() {
+        val dDragonURL = "https://ddragon.leagueoflegends.com/"
+
+        DDragonAPIService = Retrofit.Builder().baseUrl(dDragonURL).client(okHttpClient)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .build()
     }
 }

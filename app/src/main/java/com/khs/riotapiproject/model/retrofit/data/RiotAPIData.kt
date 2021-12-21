@@ -61,24 +61,6 @@ data class SummonerInfoData(
     val summonerLevel: Int
 )
 
-data class ChampionInfoData(
-    var code: Int,
-    var message: String,
-    @SerializedName("type")
-    val type: String,
-    @SerializedName("format")
-    val format: String,
-    @SerializedName("version")
-    val version: String,
-//    @SerializedName("data")
-//    val data: List<ChampionInfoDataDetail>
-
-) {
-//    data class ChampionInfoDataDetail(
-//
-//    )
-}
-
 // 로테이션 챔피언 정보
 data class RotationChampionData(
     var code: Int,
