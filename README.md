@@ -17,5 +17,6 @@
 ##
 
 ### 2021-12-22 앱 구동 화면
-![Screenshot_1640092897](https://user-images.githubusercontent.com/63734277/146937167-3d4c89da-c407-41b3-bb30-299825ce7f0d.png)
-![Screenshot_1640151687](https://user-images.githubusercontent.com/63734277/147041587-8221053f-b62c-4662-9990-8d1276cec165.png)
+![Screenshot_1640161445](https://user-images.githubusercontent.com/63734277/147060247-34044353-337e-4c74-bd40-b9654c796897.png)
+![Screenshot_1640159555](https://user-images.githubusercontent.com/63734277/147060173-f0e4114d-1668-4207-9339-38cf1b041656.png)
+![Screenshot_1640159558](https://user-images.githubusercontent.com/63734277/147060275-1ed36d5f-c40d-4255-bfae-f1f8a49a2ccb.png)
