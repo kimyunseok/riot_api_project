@@ -25,6 +25,9 @@ class SplashActivity: BaseActivityForViewBinding<ActivitySplashBinding>() {
 
     private fun setUpObserver() {
         championInfoViewModel.allChampionListLiveData.observe(this) {
+            championInfoViewModel.getRotationListFromServer()
+        }
+        championInfoViewModel.rotationChampionListLiveData.observe(this) {
             startActivity(Intent(baseContext, MainActivity::class.java))
             finish()
         }
