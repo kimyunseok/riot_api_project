@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.khs.riotapiproject.R"/>
-
         <variable
             name="model"
             type="com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel" />
@@ -33,7 +31,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="6dp"
             app:imageName="@{String.valueOf(model.iconID)}"
-            app:imageURL="@{context.getString(R.string.profile_icon_url)}"
+            app:imageURL="@{@string/profile_icon_url}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/user_info_rank"/>
