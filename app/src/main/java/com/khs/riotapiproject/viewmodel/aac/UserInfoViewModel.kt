@@ -40,8 +40,6 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
 
     fun getRankingData() {
         if(checkMinTimeForGetRankingData) {
-            GlobalApplication.mySharedPreferences.setLong("getRankingDataTime", System.currentTimeMillis())
-
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     myRepository.getRanking().let {
@@ -60,6 +58,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
                             rankList.reverse()
                         }
                         _rankingDataLiveData.postValue(response.body())
+                        GlobalApplication.mySharedPreferences.setLong("getRankingDataTime", System.currentTimeMillis())
                     }
                 } catch (e: ConnectException) {
                     e.printStackTrace()

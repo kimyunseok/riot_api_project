@@ -139,4 +139,3 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
 
     }
 }
-}
