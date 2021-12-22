@@ -19,15 +19,15 @@ import java.net.URL
 
 class ImageSaveUtil(val context: Context) {
 
-    fun imageToCache(nameOrID: String, url: String) {
+    fun imageToCache(nameOrID: String, url: String, type: String, addName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             // 최신버전 정보는 https://ddragon.leagueoflegends.com/api/versions.json 에서 확인가능.
-            val iconURL =  "${url}${nameOrID}.png"
+            val iconURL =  "${url}${nameOrID}${addName}.${type}"
             try {
                 val inputStream = URL(iconURL).openStream()
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 inputStream.close()
-                imgToCacheAndGetURI(nameOrID, bitmap)
+                imgToCacheAndGetURI(nameOrID, bitmap, type)
             } catch (e: ConnectException) {
                 e.printStackTrace()
             } catch (e: Exception) {
@@ -36,8 +36,8 @@ class ImageSaveUtil(val context: Context) {
         }
     }
 
-    private fun imgToCacheAndGetURI(nameOrID: String, bitmap: Bitmap): Uri? {
-        val fileName = "${nameOrID}.png"
+    private fun imgToCacheAndGetURI(nameOrID: String, bitmap: Bitmap, type: String): Uri? {
+        val fileName = "${nameOrID}.${type}"
         val cachePath = "${context.cacheDir}/file"
         val dir = File(cachePath)
 
@@ -74,8 +74,8 @@ class ImageSaveUtil(val context: Context) {
         return FileProvider.getUriForFile(context.applicationContext, "com.khs.riotapiproject.fileprovider", fileItem)
     }
 
-    fun checkAlreadySaved(nameOrID: String): Boolean {
-        val fileName = "${nameOrID}.png"
+    fun checkAlreadySaved(nameOrID: String, type: String): Boolean {
+        val fileName = "${nameOrID}.${type}"
         val cachePath = "${context.cacheDir}/file"
         val dir = File(cachePath)
 

@@ -9,7 +9,7 @@ import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.model.retrofit.data.ChampionData
 import com.khs.riotapiproject.model.room.data.ChampionInfo
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
-import com.khs.riotapiproject.viewmodel.ui.RotationChampionHolderModel
+import com.khs.riotapiproject.viewmodel.ui.ChampionIconHolderModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,8 +25,8 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
     val allChampionListLiveData: LiveData<List<ChampionInfo>>
         get() = _allChampionListLiveData
 
-    private val _rotationChampionListLiveData = MutableLiveData<List<RotationChampionHolderModel>>()
-    val rotationChampionListLiveData: LiveData<List<RotationChampionHolderModel>>
+    private val _rotationChampionListLiveData = MutableLiveData<List<ChampionIconHolderModel>>()
+    val rotationChampionListLiveData: LiveData<List<ChampionIconHolderModel>>
         get() = _rotationChampionListLiveData
 
     fun getChampionInfo(championKey: String) {
@@ -62,9 +62,9 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
                             }
                         }
                         val rotationListFromDB = myRepository.getAllRotationChampionList()
-                        val rotationList = mutableListOf<RotationChampionHolderModel>()
+                        val rotationList = mutableListOf<ChampionIconHolderModel>()
                         for(data in rotationListFromDB) {
-                            rotationList.add(RotationChampionHolderModel(data))
+                            rotationList.add(ChampionIconHolderModel(data))
                         }
 
                         _rotationChampionListLiveData.postValue(rotationList)
@@ -81,9 +81,9 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
             // 데이터가 빈 경우는 모든 챔프는 다시 불러왔지만(Rotation 처리가 다 풀림) RotationList를 받아오기에는 2분이 안돼서 불러오지 않으면 데이터가 빈다.
             val rotationListFromDB = myRepository.getAllRotationChampionList()
 
-            val rotationList = mutableListOf<RotationChampionHolderModel>()
+            val rotationList = mutableListOf<ChampionIconHolderModel>()
             for (data in rotationListFromDB) {
-                rotationList.add(RotationChampionHolderModel(data))
+                rotationList.add(ChampionIconHolderModel(data))
             }
             _rotationChampionListLiveData.postValue(rotationList)
         }

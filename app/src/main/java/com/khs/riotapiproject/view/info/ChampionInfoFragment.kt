@@ -28,12 +28,15 @@ class ChampionInfoFragment: BaseFragmentForViewBinding<FragmentChampionInfoBindi
 
     private fun setUpObserver() {
         championInfoViewModel.championInfoLiveData.observe(viewLifecycleOwner) {
+        val type = "jpg"
             context?.let { mContext ->
-                if(ImageSaveUtil(mContext).checkAlreadySaved(it.championId).not()) {
+                if(ImageSaveUtil(mContext).checkAlreadySaved(it.championId, type).not()) {
                     ImageSaveUtil(mContext)
                         .imageToCache(
                             it.championId,
-                            mContext.getString(R.string.champion_loading_image_url)
+                            mContext.getString(R.string.champion_loading_image_url),
+                            type,
+                            "_0"
                         )
                 }
             }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">RiotAPIProject</string>
     <string name="lol_version">11.24.1</string>
+    <string name="lol_region">KR</string>
 
     <!-- Splash -->
     <string name="splash_loading">로딩 중입니다.</string>
@@ -13,6 +14,8 @@
     <string name="champion_loading_image_url">http://ddragon.leagueoflegends.com/cdn/img/champion/loading/</string>
 
     <!-- Main -->
+    <string name="navigation_menu">메뉴</string>
+    <string name="ready_job">준비 중인 기능입니다.</string>
     <string name="input_searching_summoner_name">검색할 소환사명을 입력하세요.</string>
     <string name="rotation_info">이번 주 로테이션</string>
     <string name="solo_rank_ranking">솔로랭크 랭킹 (챌린저 TOP 10)</string>
@@ -21,5 +24,8 @@
     <!-- Champion Info -->
     <string name="champion_introduce">챔피언 소개</string>
     <string name="version_info">버전 정보:</string>
+
+    <!-- Champion List -->
+    <string name="champion_list">챔피언 목록</string>
 
 </resources>

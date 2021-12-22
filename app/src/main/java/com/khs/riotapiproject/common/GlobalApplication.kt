@@ -34,7 +34,7 @@ class GlobalApplication: Application() {
         @JvmStatic
         fun bindImageFromUrl(view: ImageView, imageName: String, imageURL: String, imageType: String) {
             val iconURL =  imageURL + "${imageName}.${imageType}"
-            if(ImageSaveUtil(view.context).checkAlreadySaved(imageName)) {
+            if(ImageSaveUtil(view.context).checkAlreadySaved(imageName, imageType)) {
                 // 저장돼 있는 이미지라면 캐시에서 미리보기
                 val fileName = "${imageName}.${imageType}"
                 val cachePath = "${view.context.cacheDir}/file"

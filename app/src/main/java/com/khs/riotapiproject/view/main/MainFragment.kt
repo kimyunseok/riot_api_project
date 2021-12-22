@@ -1,22 +1,24 @@
 package com.khs.riotapiproject.view.main
 
-import android.content.Intent
 import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.riotapiproject.R
-import com.khs.riotapiproject.adapter.RotationChampionRecyclerViewAdapter
+import com.khs.riotapiproject.adapter.ChampionIconRecyclerViewAdapter
+import com.khs.riotapiproject.adapter.MainNavigationRecyclerViewAdapter
 import com.khs.riotapiproject.adapter.SoloRankingRecyclerViewAdapter
 import com.khs.riotapiproject.databinding.FragmentMainBinding
 import com.khs.riotapiproject.util.ImageSaveUtil
 import com.khs.riotapiproject.util.UserInfoHolderModelDiffUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
-import com.khs.riotapiproject.view.search.SearchActivity
+import com.khs.riotapiproject.view.info.ChampionListFragment
 import com.khs.riotapiproject.viewmodel.aac.ChampionInfoViewModel
 import com.khs.riotapiproject.viewmodel.aac.UserInfoViewModel
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
-import com.khs.riotapiproject.viewmodel.ui.RotationChampionHolderModel
+import com.khs.riotapiproject.viewmodel.ui.ChampionIconHolderModel
+import com.khs.riotapiproject.viewmodel.ui.MainNavigationHolderModel
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import com.khs.riotapiproject.viewmodel.viewmodelfactory.MyRepositoryViewModelFactory
 
@@ -31,6 +33,8 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
     override fun init() {
         setUpBtnListener()
+        setUpNavigationRecyclerView()
+
         setUpObserver()
         getRankingDataAtLocalDB()
 
@@ -71,11 +75,14 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
             for(data in it) {
                 // 4 - 1. 유저 아이콘 캐싱
                 context?.let { mContext ->
-                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.getIconID().toString()).not()) {
+                    val type = "png"
+                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.getIconID().toString(), type).not()) {
                         ImageSaveUtil(mContext)
                             .imageToCache(
                                 data.getIconID().toString(),
-                                mContext.getString(R.string.profile_icon_url)
+                                mContext.getString(R.string.profile_icon_url),
+                                type,
+                                ""
                             )
                     }
                 }
@@ -91,11 +98,14 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
             //이미지 캐싱
             for(data in it) {
                 context?.let { mContext ->
-                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.championInfo.championId).not()) {
+                    val type = "png"
+                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.championInfo.championId, type).not()) {
                         ImageSaveUtil(mContext)
                             .imageToCache(
                                 data.championInfo.championId,
-                                mContext.getString(R.string.champion_icon_url)
+                                mContext.getString(R.string.champion_icon_url),
+                                type,
+                                ""
                             )
                     }
                 }
@@ -127,10 +137,26 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         }
     }
 
-    private fun setUpRotationChampionRecyclerView(itemList: List<RotationChampionHolderModel>) {
+    private fun setUpRotationChampionRecyclerView(itemList: List<ChampionIconHolderModel>) {
         viewDataBinding.rotationRecyclerView.apply {
-            adapter = RotationChampionRecyclerViewAdapter(context, itemList)
+            adapter = ChampionIconRecyclerViewAdapter(activity, itemList)
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun setUpNavigationRecyclerView() {
+        val menuList = mutableListOf(
+            MainNavigationHolderModel("챔피언 목록", ::showChampionListFragment),
+            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
+            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
+            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
+            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
+            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
+            MainNavigationHolderModel("준비 중", ::showReadyToastMessage)
+        )
+        viewDataBinding.navigationMenuRecyclerView.apply {
+            adapter = MainNavigationRecyclerViewAdapter(context, menuList)
+            layoutManager = LinearLayoutManager(context)
         }
     }
 
@@ -143,9 +169,29 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun setUpBtnListener() {
-        viewDataBinding.searchTextView.setOnClickListener {
-            requireActivity().startActivity(Intent(context, SearchActivity::class.java))
+        viewDataBinding.searchBtn.setOnClickListener {
+            //TODO : 유저 검색 기능
+        }
+
+        viewDataBinding.mainMenuBtn.setOnClickListener {
+            viewDataBinding.mainDrawerLayout.openDrawer(GravityCompat.START)
         }
     }
+
+    private fun showChampionListFragment() {
+        viewDataBinding.mainDrawerLayout.closeDrawer(GravityCompat.START)
+        activity?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.main_container, ChampionListFragment())
+            ?.addToBackStack(null)
+            ?.commit()
+    }
+
+    private fun showReadyToastMessage() {
+        viewDataBinding.mainDrawerLayout.closeDrawer(GravityCompat.START)
+        Toast.makeText(context, context?.getString(R.string.ready_job), Toast.LENGTH_SHORT).show()
+    }
+
+
 
 }
