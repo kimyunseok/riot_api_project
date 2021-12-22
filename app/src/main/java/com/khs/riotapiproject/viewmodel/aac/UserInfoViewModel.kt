@@ -29,7 +29,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
     val userInfoListLiveData: LiveData<List<UserInfoHolderModel>>
         get() = _userInfoListLiveData
 
-    var roomDBLoad = false
+    var rankingRoomDBLoad = false
 
     fun getRankingDataFromServer() {
         val checkMinTimeForGetRankingData =
@@ -96,6 +96,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
 
                                     val userInfo = UserInfo(
                                         0,
+                                        it.id,
                                         it.profileIconId,
                                         it.name,
                                         "챌린저 ${rankingDataDetailListValue[idx].leaguePoints}점",
@@ -127,7 +128,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
                 rankList.add(UserInfoHolderModel(userInfo))
             }
             if(rankList.isNotEmpty()) {
-                roomDBLoad = true
+                rankingRoomDBLoad = true
             }
             rankList.sortWith(compareBy { userModel -> userModel.userInfo.rank })
 

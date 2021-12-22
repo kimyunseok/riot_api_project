@@ -59,7 +59,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
         userInfoViewModel.userInfoListLiveData.observe(viewLifecycleOwner) {
             // Step 3. 불러온 랭킹 정보의 id로 유저 정보(icon, Level) 불러온 후 리사이클러뷰 셋팅
-            if(userInfoViewModel.roomDBLoad.not()) {
+            if(userInfoViewModel.rankingRoomDBLoad.not()) {
                 setUpRankingRecyclerView(it)
             } else {
                 refreshRankingRecyclerView(it)

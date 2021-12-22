@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 @Entity
 data class UserInfo(
     @PrimaryKey(autoGenerate = true) var userInfoID: Long,
+    val summonerID: String,
     val iconID: Int,
     val name: String,
     val soloRankTier: String,
