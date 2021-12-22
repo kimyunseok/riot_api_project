@@ -1,5 +1,5 @@
 # RIOT API PROJECT
-### 2021-12.20 ~ ing
+### 2021-12-20 ~ ing
 라이엇의 리그 오브 레전드 API를 이용해 전적 검색 등을 하는 개인 프로젝트입니다.
 ######
 11.24.1 버전 기준으로 만들었습니다.
@@ -16,5 +16,6 @@
 
 ##
 
-### 현재 화면
+### 2021-12-22 앱 구동 화면
 ![Screenshot_1640092897](https://user-images.githubusercontent.com/63734277/146937167-3d4c89da-c407-41b3-bb30-299825ce7f0d.png)
+![Screenshot_1640151687](https://user-images.githubusercontent.com/63734277/147041587-8221053f-b62c-4662-9990-8d1276cec165.png)
