@@ -36,7 +36,7 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
         }
     }
 
-    fun getRotationList() {
+    fun getRotationListFromServer() {
         val checkMinTimeForGetRotationChampionData =
             System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRotationChampionData", 0) > 120000
 
@@ -88,12 +88,12 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
                 _rotationChampionListLiveData.postValue(rotationList)
             } else {
                 GlobalApplication.mySharedPreferences.setLong("getRotationChampionData", 0)
-                getRotationList()
+                getRotationListFromServer()
             }
         }
     }
 
-    fun getAllChampionData() {
+    fun getAllChampionDataFromServer() {
         val checkMinTimeForGetAllChampionData =
             System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getAllChampionData", 0) > 120000
 

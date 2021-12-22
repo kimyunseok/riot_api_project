@@ -1,7 +1,6 @@
 package com.khs.riotapiproject.view.main
 
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -51,7 +50,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         userInfoViewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
                 rankingData ->
             if(rankingData != null && rankingData.code == 200) {
-                userInfoViewModel.getRankingUserInfoListByRankingData()
+                userInfoViewModel.getRankingUserInfoListByRankingDataFromServer()
             } else {
                 //Can't Get Ranking List
                 Toast.makeText(context, context?.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
@@ -109,15 +108,15 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun getRankingDataAtLocalDB() {
-        userInfoViewModel.getRankingDataAtLocalDB()
+        userInfoViewModel.getRankingDataFromLocalDB()
     }
 
     private fun getRankingData() {
-        userInfoViewModel.getRankingData()
+        userInfoViewModel.getRankingDataFromServer()
     }
 
     private fun getRotationList() {
-        championInfoViewModel.getRotationList()
+        championInfoViewModel.getRotationListFromServer()
     }
 
     private fun setUpRankingRecyclerView(itemList: List<UserInfoHolderModel>) {

@@ -31,7 +31,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
 
     var roomDBLoad = false
 
-    fun getRankingData() {
+    fun getRankingDataFromServer() {
         val checkMinTimeForGetRankingData =
             System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 120000
 
@@ -65,7 +65,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
         }
     }
 
-    fun getRankingUserInfoListByRankingData() {
+    fun getRankingUserInfoListByRankingDataFromServer() {
         val checkMinTimeForGetRankingUserInfo =
             System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingUserInfoTime", 0) > 120000
 
@@ -120,7 +120,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
         }
     }
 
-    fun getRankingDataAtLocalDB() {
+    fun getRankingDataFromLocalDB() {
         myRepository.getAllUserInfo().let {
             val rankList = mutableListOf<UserInfoHolderModel>()
             for(userInfo in it) {

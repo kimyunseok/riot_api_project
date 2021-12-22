@@ -20,7 +20,7 @@ class SplashActivity: BaseActivityForViewBinding<ActivitySplashBinding>() {
 
     override fun init() {
         setUpObserver()
-        championInfoViewModel.getAllChampionData()
+        championInfoViewModel.getAllChampionDataFromServer()
     }
 
     private fun setUpObserver() {
