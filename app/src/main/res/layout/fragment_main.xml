@@ -20,7 +20,7 @@
                 android:text="@string/input_searching_summoner_name"
                 android:textSize="16sp"
                 android:textColor="@color/DarkGray"
-                android:background="@drawable/shape_solid_whitesmoke_stroke_1dp_black_square_radius_15dp"
+                android:background="@drawable/shape_solid_whitesmoke"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

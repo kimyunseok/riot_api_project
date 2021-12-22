@@ -35,4 +35,5 @@ class MyRepository {
     fun setChampionRotation(key: String) = championInfoDB.setChampionRotation(key)
     fun insertChampionInfo(championInfo: ChampionInfo) = championInfoDB.insertChampionInfo(championInfo)
     fun clearChampionInfo() = championInfoDB.clearChampionInfo()
+    fun getChampionInfoByChampionKey(championKey: String) = championInfoDB.getChampionInfoByChampionKey(championKey)
 }

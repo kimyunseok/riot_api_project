@@ -2,6 +2,9 @@
     <string name="app_name">RiotAPIProject</string>
     <string name="lol_version">11.24.1</string>
 
+    <!-- Splash -->
+    <string name="splash_loading">로딩 중입니다.</string>
+
     <!-- URL -->
     <string name="profile_icon_url">http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/</string>
     <string name="champion_icon_url">http://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/</string>
