@@ -10,7 +10,7 @@ import com.khs.riotapiproject.model.retrofit.data.ChampionData
 import com.khs.riotapiproject.model.retrofit.data.RankingData
 import com.khs.riotapiproject.model.room.data.ChampionInfo
 import com.khs.riotapiproject.model.room.data.UserInfo
-import com.khs.riotapiproject.viewmodel.repository.MainRepository
+import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import com.khs.riotapiproject.viewmodel.ui.RotationChampionHolderModel
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.net.ConnectException
 
-class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
+class MainViewModel(private val mainRepository: MyRepository): ViewModel() {
     private val _rankingDataLiveData = MutableLiveData<RankingData>()
     val rankingDataLiveData: LiveData<RankingData>
         get() = _rankingDataLiveData

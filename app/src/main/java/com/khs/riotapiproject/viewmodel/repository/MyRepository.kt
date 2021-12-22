@@ -8,7 +8,7 @@ import com.khs.riotapiproject.model.room.data.ChampionInfo
 import com.khs.riotapiproject.model.room.data.UserInfo
 import com.khs.riotapiproject.model.room.database.AppDataBase
 
-class MainRepository {
+class MyRepository {
     private val riotRetrofit = riotAPIService.create(RiotAPI::class.java)
     private val ddragonRetrofit = dDragonAPIService.create(DDragonAPI::class.java)
 

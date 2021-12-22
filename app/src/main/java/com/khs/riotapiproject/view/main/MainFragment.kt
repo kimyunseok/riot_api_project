@@ -1,8 +1,6 @@
 package com.khs.riotapiproject.view.main
 
 import android.content.Intent
-import android.util.Log
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -10,14 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.riotapiproject.R
 import com.khs.riotapiproject.adapter.RotationChampionRecyclerViewAdapter
 import com.khs.riotapiproject.adapter.SoloRankingRecyclerViewAdapter
-import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.databinding.FragmentMainBinding
 import com.khs.riotapiproject.util.ImageSaveUtil
 import com.khs.riotapiproject.util.UserInfoHolderModelDiffUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.view.search.SearchActivity
 import com.khs.riotapiproject.viewmodel.aac.MainViewModel
-import com.khs.riotapiproject.viewmodel.repository.MainRepository
+import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import com.khs.riotapiproject.viewmodel.ui.RotationChampionHolderModel
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import com.khs.riotapiproject.viewmodel.viewmodelfactory.MainRepositoryViewModelFactory
@@ -26,7 +23,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     override val layoutID: Int
         get() = R.layout.fragment_main
 
-    private val viewModel: MainViewModel by viewModels { MainRepositoryViewModelFactory(MainRepository()) }
+    private val viewModel: MainViewModel by viewModels { MainRepositoryViewModelFactory(MyRepository()) }
 
     lateinit var rankingRecyclerViewAdapter: SoloRankingRecyclerViewAdapter
 

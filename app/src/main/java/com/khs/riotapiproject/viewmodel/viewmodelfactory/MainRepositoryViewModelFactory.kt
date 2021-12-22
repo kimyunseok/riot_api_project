@@ -2,10 +2,10 @@ package com.khs.riotapiproject.viewmodel.viewmodelfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.khs.riotapiproject.viewmodel.repository.MainRepository
+import com.khs.riotapiproject.viewmodel.repository.MyRepository
 
-class MainRepositoryViewModelFactory(private val mainRepository: MainRepository): ViewModelProvider.Factory {
+class MainRepositoryViewModelFactory(private val mainRepository: MyRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(MainRepository::class.java).newInstance(mainRepository)
+        return modelClass.getConstructor(MyRepository::class.java).newInstance(mainRepository)
     }
 }
