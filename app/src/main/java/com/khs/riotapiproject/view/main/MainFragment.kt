@@ -34,8 +34,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         setUpObserver()
         getRankingDataAtLocalDB()
 
-        //버전 바뀌었을 때만 데이터 Json으로 가져옴.
-        championInfoViewModel.getAllChampionData(context?.getString(R.string.lol_version).toString())
+        championInfoViewModel.getRotationList()
 
         //최소 데이터갱신 2분.
         getRankingData()
@@ -86,11 +85,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
             }
         }
 
-        // 모든 챔피언 정보 받아오면 로테이션 챔피언 정보 받아옴.
-        championInfoViewModel.allChampionListLiveData.observe(viewLifecycleOwner) {
-            getRotationList()
-        }
-
+        //Rotation 챔피언 리스트 불러옴.
         championInfoViewModel.rotationChampionListLiveData.observe(viewLifecycleOwner) {
 
             //이미지 캐싱

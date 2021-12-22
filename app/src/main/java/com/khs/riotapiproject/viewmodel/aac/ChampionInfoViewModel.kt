@@ -38,14 +38,17 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
         }
     }
 
-    val checkMinTimeForGetRotationChampionData: Boolean by lazy {
+    private val checkMinTimeForGetRotationChampionData: Boolean by lazy {
         System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRotationChampionData", 0) > 120000
+    }
+
+    private val checkMinTimeForGetAllChampionData: Boolean by lazy {
+        System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getAllChampionData", 0) > 120000
     }
 
     fun getRotationList() {
         if(checkMinTimeForGetRotationChampionData) {
             myRepository.setAllChampionNoRotation()
-            GlobalApplication.mySharedPreferences.setLong("getRotationChampionData", System.currentTimeMillis())
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
@@ -69,6 +72,7 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
                         }
 
                         _rotationChampionListLiveData.postValue(rotationList)
+                        GlobalApplication.mySharedPreferences.setLong("getRotationChampionData", System.currentTimeMillis())
                     }
                 } catch (e: ConnectException) {
                     e.printStackTrace()
@@ -89,9 +93,7 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
     }
 
     fun getAllChampionData(version: String) {
-        val versionChanged = (version != GlobalApplication.mySharedPreferences.getString("lolVersion", "NO_VERSION"))
-
-        if (versionChanged) {
+        if (checkMinTimeForGetAllChampionData) {
             myRepository.clearChampionInfo()
             CoroutineScope(Dispatchers.IO).launch {
                 GlobalApplication.mySharedPreferences.setString("lolVersion", version)
@@ -136,4 +138,5 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
         }
 
     }
+}
 }
