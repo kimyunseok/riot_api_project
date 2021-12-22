@@ -13,6 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/champion_introduce_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/champion_introduce"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <ImageView
             android:id="@+id/champion_info_image_view"
             android:layout_width="0dp"
@@ -23,7 +35,7 @@
             app:imageURL="@{@string/champion_loading_image_url}"
             app:imageType="@{@string/jpg}"
             app:layout_constraintDimensionRatio="2:3"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/champion_introduce_text_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

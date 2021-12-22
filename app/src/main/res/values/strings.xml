@@ -19,6 +19,7 @@
     <string name="network_error">네트워크 에러로 불러오지 못했습니다.</string>
 
     <!-- Champion Info -->
+    <string name="champion_introduce">챔피언 소개</string>
     <string name="version_info">버전 정보:</string>
 
 </resources>
