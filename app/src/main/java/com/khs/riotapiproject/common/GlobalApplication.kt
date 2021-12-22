@@ -30,13 +30,13 @@ class GlobalApplication: Application() {
             .build()
 
         //Glide URL -> ImageView 데이터바인딩에서 사용하기 위한 메서드
-        @BindingAdapter("imageName", "imageURL", requireAll = true)
+        @BindingAdapter("imageName", "imageURL", "imageType", requireAll = true)
         @JvmStatic
-        fun bindImageFromUrl(view: ImageView, imageName: String, imageURL: String) {
-            val iconURL =  imageURL + "${imageName}.png"
+        fun bindImageFromUrl(view: ImageView, imageName: String, imageURL: String, imageType: String) {
+            val iconURL =  imageURL + "${imageName}.${imageType}"
             if(ImageSaveUtil(view.context).checkAlreadySaved(imageName)) {
                 // 저장돼 있는 이미지라면 캐시에서 미리보기
-                val fileName = "${imageName}.png"
+                val fileName = "${imageName}.${imageType}"
                 val cachePath = "${view.context.cacheDir}/file"
                 val dir = File(cachePath)
                 val fileItem = File("$dir/$fileName")

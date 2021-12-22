@@ -32,6 +32,7 @@
             android:layout_marginStart="6dp"
             app:imageName="@{String.valueOf(model.iconID)}"
             app:imageURL="@{@string/profile_icon_url}"
+            app:imageType="@{@string/png}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/user_info_rank"/>

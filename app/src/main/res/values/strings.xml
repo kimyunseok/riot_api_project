@@ -6,6 +6,8 @@
     <string name="splash_loading">로딩 중입니다.</string>
 
     <!-- URL -->
+    <string name="png">png</string>
+    <string name="jpg">jpg</string>
     <string name="profile_icon_url">http://ddragon.leagueoflegends.com/cdn/11.24.1/img/profileicon/</string>
     <string name="champion_icon_url">http://ddragon.leagueoflegends.com/cdn/11.24.1/img/champion/</string>
     <string name="champion_loading_image_url">http://ddragon.leagueoflegends.com/cdn/img/champion/loading/</string>
