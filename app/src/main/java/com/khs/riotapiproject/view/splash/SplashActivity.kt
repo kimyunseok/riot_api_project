@@ -1,5 +1,6 @@
 package com.khs.riotapiproject.view.splash
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.activity.viewModels
 import com.khs.riotapiproject.R
@@ -10,6 +11,7 @@ import com.khs.riotapiproject.viewmodel.aac.ChampionInfoViewModel
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import com.khs.riotapiproject.viewmodel.viewmodelfactory.MyRepositoryViewModelFactory
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity: BaseActivityForViewBinding<ActivitySplashBinding>() {
     override val layoutID: Int
         get() = R.layout.activity_splash
@@ -27,4 +29,5 @@ class SplashActivity: BaseActivityForViewBinding<ActivitySplashBinding>() {
             finish()
         }
     }
+
 }
