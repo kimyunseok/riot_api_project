@@ -116,7 +116,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun getRotationList() {
-        championInfoViewModel.getRotationListFromServer()
+        championInfoViewModel.getRotationList()
     }
 
     private fun setUpRankingRecyclerView(itemList: List<UserInfoHolderModel>) {

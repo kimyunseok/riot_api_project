@@ -36,7 +36,7 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
         }
     }
 
-    fun getRotationListFromServer() {
+    fun getRotationList() {
         val checkMinTimeForGetRotationChampionData =
             System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getAllChampionData", 0) > 120000
 
@@ -80,20 +80,16 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
             // 만일 2분 전에 요청 시 캐싱된 데이터를 보여준다. 캐싱된 데이터가 비어있을 경우 다시 한번 메서드를 호출해서 서버와 통신해서 데이터를 받아온다.
             // 데이터가 빈 경우는 모든 챔프는 다시 불러왔지만(Rotation 처리가 다 풀림) RotationList를 받아오기에는 2분이 안돼서 불러오지 않으면 데이터가 빈다.
             val rotationListFromDB = myRepository.getAllRotationChampionList()
-            if(rotationListFromDB.isNotEmpty()) {
-                val rotationList = mutableListOf<RotationChampionHolderModel>()
-                for (data in rotationListFromDB) {
-                    rotationList.add(RotationChampionHolderModel(data))
-                }
-                _rotationChampionListLiveData.postValue(rotationList)
-            } else {
-                GlobalApplication.mySharedPreferences.setLong("getRotationChampionData", 0)
-                getRotationListFromServer()
+
+            val rotationList = mutableListOf<RotationChampionHolderModel>()
+            for (data in rotationListFromDB) {
+                rotationList.add(RotationChampionHolderModel(data))
             }
+            _rotationChampionListLiveData.postValue(rotationList)
         }
     }
 
-    fun getAllChampionDataFromServer() {
+    fun getAllChampionData() {
         val checkMinTimeForGetAllChampionData =
             System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getAllChampionData", 0) > 120000
 
