@@ -20,7 +20,7 @@ class SplashActivity: BaseActivityForViewBinding<ActivitySplashBinding>() {
 
     override fun init() {
         setUpObserver()
-        championInfoViewModel.getAllChampionData(baseContext.getString(R.string.lol_version))
+        championInfoViewModel.getAllChampionData()
     }
 
     private fun setUpObserver() {
@@ -30,4 +30,7 @@ class SplashActivity: BaseActivityForViewBinding<ActivitySplashBinding>() {
         }
     }
 
+    override fun onBackPressed() {
+        //super.onBackPressed() - 데이터 불러오는 동안 뒤로가기 방지.
+    }
 }

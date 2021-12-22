@@ -29,16 +29,12 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
     val userInfoListLiveData: LiveData<List<UserInfoHolderModel>>
         get() = _userInfoListLiveData
 
-
-
     var roomDBLoad = false
 
-    // 2분에 한 번씩 데이터 가져오기 가능.
-    val checkMinTimeForGetRankingData: Boolean by lazy {
-        System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 120000
-    }
-
     fun getRankingData() {
+        val checkMinTimeForGetRankingData =
+            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 120000
+
         if(checkMinTimeForGetRankingData) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
@@ -69,48 +65,57 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
         }
     }
 
-    fun getUserInfoListByIds() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val rankList = mutableListOf<UserInfoHolderModel>()
+    fun getRankingUserInfoListByRankingData() {
+        val checkMinTimeForGetRankingUserInfo =
+            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingUserInfoTime", 0) > 120000
 
-                val maxLength = if(rankingDataDetailListValue.size > 10) {
-                    10
-                } else {
-                    rankingDataDetailListValue.size
-                }
+        if(checkMinTimeForGetRankingUserInfo) {
+            GlobalApplication.mySharedPreferences.setLong("getRankingUserInfoTime", System.currentTimeMillis())
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val rankList = mutableListOf<UserInfoHolderModel>()
 
-                for(idx in 0 until maxLength) {
-                    myRepository.getSummonerInfoById(rankingDataDetailListValue[idx].summonerId).let {
-                            response ->
-
-                        Log.d("UserInfoViewModel", "Get User Info API. code : ${response.code()}, message : ${response.message()}")
-
-                        response.body()?.let {
-                            it.code = response.code()
-                            it.message = response.message()
-
-                            val userInfo = UserInfo(
-                                0,
-                                it.profileIconId,
-                                it.name,
-                                "챌린저 ${rankingDataDetailListValue[idx].leaguePoints}점",
-                                it.summonerLevel,
-                                idx + 1,
-                                rankingDataDetailListValue[idx].wins,
-                                rankingDataDetailListValue[idx].losses
-                            )
-
-                            rankList.add(UserInfoHolderModel(userInfo))
-                        }
+                    val maxLength = if (rankingDataDetailListValue.size > 10) {
+                        10
+                    } else {
+                        rankingDataDetailListValue.size
                     }
-                }
 
-                _userInfoListLiveData.postValue(rankList)
-            } catch (e: ConnectException) {
-                e.printStackTrace()
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
+                    for (idx in 0 until maxLength) {
+                        myRepository.getSummonerInfoById(rankingDataDetailListValue[idx].summonerId)
+                            .let { response ->
+
+                                Log.d(
+                                    "UserInfoViewModel",
+                                    "Get Ranking User Info API. code : ${response.code()}, message : ${response.message()}"
+                                )
+
+                                response.body()?.let {
+                                    it.code = response.code()
+                                    it.message = response.message()
+
+                                    val userInfo = UserInfo(
+                                        0,
+                                        it.profileIconId,
+                                        it.name,
+                                        "챌린저 ${rankingDataDetailListValue[idx].leaguePoints}점",
+                                        it.summonerLevel,
+                                        idx + 1,
+                                        rankingDataDetailListValue[idx].wins,
+                                        rankingDataDetailListValue[idx].losses
+                                    )
+
+                                    rankList.add(UserInfoHolderModel(userInfo))
+                                }
+                            }
+                    }
+
+                    _userInfoListLiveData.postValue(rankList)
+                } catch (e: ConnectException) {
+                    e.printStackTrace()
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }

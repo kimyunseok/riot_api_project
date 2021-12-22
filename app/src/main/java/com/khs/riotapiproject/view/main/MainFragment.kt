@@ -1,6 +1,7 @@
 package com.khs.riotapiproject.view.main
 
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -34,7 +35,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         setUpObserver()
         getRankingDataAtLocalDB()
 
-        championInfoViewModel.getRotationList()
+        getRotationList()
 
         //최소 데이터갱신 2분.
         getRankingData()
@@ -49,8 +50,8 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         // Step 2. 랭킹 정보 서버에서 불러오기
         userInfoViewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
                 rankingData ->
-            if(rankingData.code == 200) {
-                userInfoViewModel.getUserInfoListByIds()
+            if(rankingData != null && rankingData.code == 200) {
+                userInfoViewModel.getRankingUserInfoListByRankingData()
             } else {
                 //Can't Get Ranking List
                 Toast.makeText(context, context?.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
@@ -129,7 +130,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
     private fun setUpRotationChampionRecyclerView(itemList: List<RotationChampionHolderModel>) {
         viewDataBinding.rotationRecyclerView.apply {
-            adapter = RotationChampionRecyclerViewAdapter(itemList)
+            adapter = RotationChampionRecyclerViewAdapter(context, itemList)
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
     }
