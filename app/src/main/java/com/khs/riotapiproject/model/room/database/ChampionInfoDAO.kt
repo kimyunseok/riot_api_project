@@ -27,4 +27,7 @@ interface ChampionInfoDAO {
 
     @Query("SELECT * FROM ChampionInfo WHERE championId = :championId")
     fun getAllRotationChampionList(championId: String): ChampionInfo
+
+    @Query("SELECT * FROM ChampionInfo WHERE championKey = :championKey")
+    fun getChampionInfoByChampionKey(championKey: String): ChampionInfo
 }

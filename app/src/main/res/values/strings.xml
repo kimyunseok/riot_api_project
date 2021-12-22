@@ -18,4 +18,8 @@
     <string name="solo_rank_ranking">솔로랭크 랭킹 (챌린저)</string>
     <string name="network_error">네트워크 에러로 불러오지 못했습니다.</string>
 
+    <!-- Champion Info -->
+    <string name="version_info">버전 정보:</string>
+
+
 </resources>
