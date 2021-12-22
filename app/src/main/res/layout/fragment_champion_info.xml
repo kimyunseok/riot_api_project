@@ -11,7 +11,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp"
+        android:background="@color/black">
 
         <TextView
             android:id="@+id/champion_introduce_text_view"
@@ -19,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:text="@string/champion_introduce"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="17sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@{viewModel.championInfoLiveData.championName}"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/champion_info_image_view"
@@ -58,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@{viewModel.championInfoLiveData.championDescription}"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/champion_info_name_text_view"
             app:layout_constraintStart_toStartOf="parent"

@@ -7,7 +7,6 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="8dp"
         tools:context=".view.main.MainActivity">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
