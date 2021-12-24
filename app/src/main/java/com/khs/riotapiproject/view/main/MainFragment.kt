@@ -12,7 +12,7 @@ import com.khs.riotapiproject.adapter.MainNavigationRecyclerViewAdapter
 import com.khs.riotapiproject.adapter.SoloRankingRecyclerViewAdapter
 import com.khs.riotapiproject.databinding.FragmentMainBinding
 import com.khs.riotapiproject.util.ImageSaveUtil
-import com.khs.riotapiproject.util.UserInfoHolderModelDiffUtil
+import com.khs.riotapiproject.util.UserRankingHolderModelDiffUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.view.info.ChampionListFragment
 import com.khs.riotapiproject.view.info.UserInfoFragment
@@ -21,7 +21,7 @@ import com.khs.riotapiproject.viewmodel.aac.UserSoloRankTop10ViewModel
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import com.khs.riotapiproject.viewmodel.ui.ChampionIconHolderModel
 import com.khs.riotapiproject.viewmodel.ui.MainNavigationHolderModel
-import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
+import com.khs.riotapiproject.viewmodel.ui.UserRankingHolderModel
 import com.khs.riotapiproject.viewmodel.viewmodelfactory.MyRepositoryViewModelFactory
 
 class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
@@ -136,7 +136,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         championRotationViewModel.getRotationChampionData()
     }
 
-    private fun setUpRankingRecyclerView(itemList: List<UserInfoHolderModel>) {
+    private fun setUpRankingRecyclerView(itemList: List<UserRankingHolderModel>) {
         rankingRecyclerViewAdapter = SoloRankingRecyclerViewAdapter(itemList, ::showUserInfoFragment)
         viewDataBinding.soloRankRecyclerView.apply {
             adapter = rankingRecyclerViewAdapter
@@ -161,10 +161,10 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         }
     }
 
-    private fun refreshRankingRecyclerView(newItemList: List<UserInfoHolderModel>) {
+    private fun refreshRankingRecyclerView(newItemList: List<UserRankingHolderModel>) {
         val oldItemList = rankingRecyclerViewAdapter.itemList
 
-        val diffUtil = DiffUtil.calculateDiff(UserInfoHolderModelDiffUtil(oldItemList.toMutableList(), newItemList.toMutableList()), false)
+        val diffUtil = DiffUtil.calculateDiff(UserRankingHolderModelDiffUtil(oldItemList.toMutableList(), newItemList.toMutableList()), false)
         diffUtil.dispatchUpdatesTo(rankingRecyclerViewAdapter)
         rankingRecyclerViewAdapter.itemList = newItemList
     }

@@ -8,19 +8,19 @@ import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.model.retrofit.data.RankingData
 import com.khs.riotapiproject.model.room.data.UserRankingInfo
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
-import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
+import com.khs.riotapiproject.viewmodel.ui.UserRankingHolderModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.ConnectException
 
 class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewModel() {
-    private val _soloRankTop10AtLocalDBListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
-    val soloRankTop10AtLocalDBListLiveData: LiveData<List<UserInfoHolderModel>>
+    private val _soloRankTop10AtLocalDBListLiveData = MutableLiveData<List<UserRankingHolderModel>>()
+    val soloRankTop10AtLocalDBListLiveData: LiveData<List<UserRankingHolderModel>>
         get() = _soloRankTop10AtLocalDBListLiveData
 
-    private val _soloRankTop10ListFromServerLiveData = MutableLiveData<List<UserInfoHolderModel>>()
-    val soloRankTop10ListFromServerLiveData: LiveData<List<UserInfoHolderModel>>
+    private val _soloRankTop10ListFromServerLiveData = MutableLiveData<List<UserRankingHolderModel>>()
+    val soloRankTop10ListFromServerLiveData: LiveData<List<UserRankingHolderModel>>
         get() = _soloRankTop10ListFromServerLiveData
 
     fun getRankingDataFromServer() {
@@ -61,9 +61,9 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
 
     fun getRankingDataFromLocalDB() {
         myRepository.getAllUserRankingInfo().let {
-            val rankList = mutableListOf<UserInfoHolderModel>()
+            val rankList = mutableListOf<UserRankingHolderModel>()
             for(userInfo in it) {
-                rankList.add(UserInfoHolderModel(userInfo))
+                rankList.add(UserRankingHolderModel(userInfo))
             }
             if(rankList.isNotEmpty()) {
                 rankList.sortWith(compareBy { userModel -> userModel.userRankingInfo.rank })
@@ -81,7 +81,7 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
     }
 
     private suspend fun setTop10Rank(rankList: List<RankingData.RankingDataDetail>) {
-        val holderModelList = mutableListOf<UserInfoHolderModel>()
+        val holderModelList = mutableListOf<UserRankingHolderModel>()
 
         val maxLength = if (rankList.size > 10) {
             10
@@ -117,7 +117,7 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
                             rankList[idx].losses
                         )
 
-                        holderModelList.add(UserInfoHolderModel(userInfo))
+                        holderModelList.add(UserRankingHolderModel(userInfo))
                     }
                 }
         }

@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
 
 class GlobalApplication: Application() {
@@ -53,6 +54,10 @@ class GlobalApplication: Application() {
             }
         }
 
+        fun numberCommaFormat(number: String): String {
+            val decimalFormat = DecimalFormat("#,###")
+            return decimalFormat.format(Integer.valueOf(number))
+        }
     }
 
     override fun onCreate() {

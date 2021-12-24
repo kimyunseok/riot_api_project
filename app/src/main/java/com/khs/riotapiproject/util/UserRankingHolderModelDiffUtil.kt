@@ -1,9 +1,9 @@
 package com.khs.riotapiproject.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
+import com.khs.riotapiproject.viewmodel.ui.UserRankingHolderModel
 
-class UserInfoHolderModelDiffUtil(val oldList: MutableList<UserInfoHolderModel>, val newList: MutableList<UserInfoHolderModel>): DiffUtil.Callback() {
+class UserRankingHolderModelDiffUtil(val oldList: MutableList<UserRankingHolderModel>, val newList: MutableList<UserRankingHolderModel>): DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }

@@ -1,11 +1,13 @@
 package com.khs.riotapiproject.viewmodel.ui
 
+import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.model.room.data.UserRankingInfo
 
-class UserInfoHolderModel(val userRankingInfo: UserRankingInfo) {
+class UserRankingHolderModel(val userRankingInfo: UserRankingInfo) {
 
     fun getTierFormat(): String {
-        return "${userRankingInfo.soloRankTier} ${userRankingInfo.soloRankStage} ${userRankingInfo.soloRankPoint}점"
+        val soloRankTier = GlobalApplication.numberCommaFormat(userRankingInfo.soloRankPoint)
+        return "${userRankingInfo.soloRankTier}\n${userRankingInfo.soloRankStage} ${soloRankTier}점"
     }
 
     fun levelFormat(): String {
