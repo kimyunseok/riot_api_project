@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.khs.riotapiproject.R
 import com.khs.riotapiproject.common.GlobalApplication
+import com.khs.riotapiproject.common.GlobalApplication.Companion.minTimeForRequest
 import com.khs.riotapiproject.model.room.data.UserInfo
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import kotlinx.coroutines.CoroutineScope
@@ -48,7 +49,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
 
     fun getUserInfoBySummonerName(summonerName: String) {
         val checkMinTimeForGetSummonerData =
-            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("get${summonerName}Info", 0) > 120000
+            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("get${summonerName}Info", 0) > minTimeForRequest
 
         if(checkMinTimeForGetSummonerData) {
             CoroutineScope(Dispatchers.IO).launch {

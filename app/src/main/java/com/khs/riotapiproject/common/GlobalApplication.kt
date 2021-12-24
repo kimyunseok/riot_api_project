@@ -22,6 +22,8 @@ class GlobalApplication: Application() {
         lateinit var riotAPIService: Retrofit
         lateinit var dDragonAPIService: Retrofit
 
+        const val minTimeForRequest = 120000 // 1000(1초) * 60(1분) * 2, 2분마다 한번씩 같은 데이터 요청 가능.
+
         val okHttpClient = OkHttpClient
             .Builder()
             .connectTimeout(10, TimeUnit.SECONDS)

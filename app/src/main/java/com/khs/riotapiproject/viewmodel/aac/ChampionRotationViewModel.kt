@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.khs.riotapiproject.common.GlobalApplication
+import com.khs.riotapiproject.common.GlobalApplication.Companion.minTimeForRequest
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import com.khs.riotapiproject.viewmodel.ui.ChampionIconHolderModel
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +25,7 @@ class ChampionRotationViewModel(private val myRepository: MyRepository): ViewMod
 
     fun setRotationListFromServer(version: String) {
         val checkMinTimeForGetRotationChampionData =
-            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("setRotationListTime", 0) > 120000
+            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("setRotationListTime", 0) > minTimeForRequest
 
         val checkVersionForGetChampionData =
             version != GlobalApplication.mySharedPreferences.getString("championDataVersion", "NO_VERSION")

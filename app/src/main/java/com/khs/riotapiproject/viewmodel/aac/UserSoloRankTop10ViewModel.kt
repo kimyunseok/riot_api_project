@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.khs.riotapiproject.common.GlobalApplication
+import com.khs.riotapiproject.common.GlobalApplication.Companion.minTimeForRequest
 import com.khs.riotapiproject.model.retrofit.data.RankingData
 import com.khs.riotapiproject.model.room.data.UserRankingInfo
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
@@ -25,7 +26,7 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
 
     fun getRankingDataFromServer() {
         val checkMinTimeForGetRankingData =
-            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > 120000
+            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingDataTime", 0) > minTimeForRequest
 
         if(checkMinTimeForGetRankingData) {
             CoroutineScope(Dispatchers.IO).launch {
