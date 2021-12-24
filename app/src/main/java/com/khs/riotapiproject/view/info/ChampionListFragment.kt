@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.khs.riotapiproject.R
 import com.khs.riotapiproject.adapter.ChampionIconRecyclerViewAdapter
 import com.khs.riotapiproject.databinding.FragmentChampionListBinding
+import com.khs.riotapiproject.util.ImageSaveUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.viewmodel.aac.ChampionAllViewModel
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
@@ -31,6 +32,20 @@ class ChampionListFragment: BaseFragmentForViewBinding<FragmentChampionListBindi
             for(championInfo in it) {
                 val championIconHolderModel = ChampionIconHolderModel(championInfo)
                 championList.add(championIconHolderModel)
+
+                context?.let { mContext ->
+                    val type = "png"
+                    if(ImageSaveUtil(mContext).checkAlreadySaved(championInfo.championId, type).not()) {
+                        ImageSaveUtil(mContext)
+                            .imageToCache(
+                                championInfo.championId,
+                                mContext.getString(R.string.champion_icon_url_front)
+                                        + mContext.getString(R.string.lol_version)
+                                        + mContext.getString(R.string.champion_icon_url_back),
+                                type
+                            )
+                    }
+                }
             }
             championList.sortWith(compareBy { champion -> champion.championInfo.championName })
             setUpChampionListRecyclerView(championList)
