@@ -153,13 +153,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
     private fun setUpNavigationRecyclerView() {
         val menuList = mutableListOf(
-            MainNavigationHolderModel("챔피언 목록", ::showChampionListFragment),
-            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
-            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
-            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
-            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
-            MainNavigationHolderModel("준비 중", ::showReadyToastMessage),
-            MainNavigationHolderModel("준비 중", ::showReadyToastMessage)
+            MainNavigationHolderModel("챔피언 목록", ::showChampionListFragment)
         )
         viewDataBinding.navigationMenuRecyclerView.apply {
             adapter = MainNavigationRecyclerViewAdapter(context, menuList)
