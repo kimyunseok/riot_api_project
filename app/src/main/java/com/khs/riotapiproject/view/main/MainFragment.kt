@@ -15,6 +15,7 @@ import com.khs.riotapiproject.util.UserInfoHolderModelDiffUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.view.info.ChampionListFragment
 import com.khs.riotapiproject.viewmodel.aac.ChampionInfoViewModel
+import com.khs.riotapiproject.viewmodel.aac.ChampionRotationViewModel
 import com.khs.riotapiproject.viewmodel.aac.UserSoloRankTop10ViewModel
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import com.khs.riotapiproject.viewmodel.ui.ChampionIconHolderModel
@@ -27,7 +28,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         get() = R.layout.fragment_main
 
     private val userSoloRankTop10ViewModel: UserSoloRankTop10ViewModel by viewModels { MyRepositoryViewModelFactory(MyRepository()) }
-    private val championInfoViewModel: ChampionInfoViewModel by viewModels { MyRepositoryViewModelFactory(MyRepository()) }
+    private val championRotationViewModel: ChampionRotationViewModel by viewModels { MyRepositoryViewModelFactory(MyRepository()) }
 
     lateinit var rankingRecyclerViewAdapter: SoloRankingRecyclerViewAdapter
 
@@ -48,7 +49,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
     private fun setUpObserver() {
         //Rotation 챔피언 리스트 불러옴.
-        championInfoViewModel.rotationChampionList.observe(viewLifecycleOwner) {
+        championRotationViewModel.rotationChampionList.observe(viewLifecycleOwner) {
             //이미지 캐싱
             for(data in it) {
                 context?.let { mContext ->
@@ -123,7 +124,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         }
 
         // 로테이션 리스트 새로 불러왔다면 getRotationList() 호출.
-        championInfoViewModel.setRotationChampionListCompleteLiveData.observe(viewLifecycleOwner) {
+        championRotationViewModel.setRotationChampionListCompleteLiveData.observe(viewLifecycleOwner) {
             getRotationList()
         }
     }
@@ -137,11 +138,11 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun setRotationList() {
-        championInfoViewModel.setRotationListFromServer(context?.getString(R.string.lol_version).toString())
+        championRotationViewModel.setRotationListFromServer(context?.getString(R.string.lol_version).toString())
     }
 
     private fun getRotationList() {
-        championInfoViewModel.getRotationChampionData()
+        championRotationViewModel.getRotationChampionData()
     }
 
     private fun setUpRankingRecyclerView(itemList: List<UserInfoHolderModel>) {
