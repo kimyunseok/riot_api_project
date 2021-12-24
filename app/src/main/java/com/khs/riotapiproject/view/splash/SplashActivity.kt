@@ -20,14 +20,14 @@ class SplashActivity: BaseActivityForViewBinding<ActivitySplashBinding>() {
 
     override fun init() {
         setUpObserver()
-        championInfoViewModel.getAllChampionData()
+        championInfoViewModel.getAllChampionData(baseContext.getString(R.string.lol_version))
     }
 
     private fun setUpObserver() {
         championInfoViewModel.allChampionListLiveData.observe(this) {
-            championInfoViewModel.getRotationList()
+            championInfoViewModel.setRotationListFromServer(baseContext.getString(R.string.lol_version))
         }
-        championInfoViewModel.rotationChampionListLiveData.observe(this) {
+        championInfoViewModel.setRotationChampionListCompleteLiveData.observe(this) {
             startActivity(Intent(baseContext, MainActivity::class.java))
             finish()
         }

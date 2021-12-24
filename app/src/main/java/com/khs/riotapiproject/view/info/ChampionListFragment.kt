@@ -21,7 +21,7 @@ class ChampionListFragment: BaseFragmentForViewBinding<FragmentChampionListBindi
         )
     }
     override fun init() {
-        championInfoViewModel.getAllChampionData()
+        championInfoViewModel.getAllChampionData(context?.getString(R.string.lol_version).toString())
         setUpObserver()
     }
 

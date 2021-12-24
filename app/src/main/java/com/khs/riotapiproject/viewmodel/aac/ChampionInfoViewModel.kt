@@ -25,9 +25,13 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
     val allChampionListLiveData: LiveData<List<ChampionInfo>>
         get() = _allChampionListLiveData
 
-    private val _rotationChampionListLiveData = MutableLiveData<List<ChampionIconHolderModel>>()
-    val rotationChampionListLiveData: LiveData<List<ChampionIconHolderModel>>
-        get() = _rotationChampionListLiveData
+    private val _setRotationChampionListCompleteLiveData = MutableLiveData<Boolean>()
+    val setRotationChampionListCompleteLiveData: LiveData<Boolean>
+        get() = _setRotationChampionListCompleteLiveData
+
+    private val _rotationChampionList = MutableLiveData<List<ChampionIconHolderModel>>()
+    val rotationChampionList: LiveData<List<ChampionIconHolderModel>>
+        get() = _rotationChampionList
 
     fun getChampionInfo(championKey: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -36,11 +40,14 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
         }
     }
 
-    fun getRotationList() {
+    fun setRotationListFromServer(version: String) {
         val checkMinTimeForGetRotationChampionData =
-            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getAllChampionData", 0) > 120000
+            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("setRotationListTime", 0) > 120000
 
-        if(checkMinTimeForGetRotationChampionData) {
+        val checkVersionForGetChampionData =
+            version != GlobalApplication.mySharedPreferences.getString("championDataVersion", "NO_VERSION")
+
+        if(checkVersionForGetChampionData || checkMinTimeForGetRotationChampionData) {
             myRepository.setAllChampionNoRotation()
             CoroutineScope(Dispatchers.IO).launch {
                 try {
@@ -61,14 +68,10 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
                                 myRepository.setChampionRotation(rotationChampionIdForNew.toString())
                             }
                         }
-                        val rotationListFromDB = myRepository.getAllRotationChampionList()
-                        val rotationList = mutableListOf<ChampionIconHolderModel>()
-                        for(data in rotationListFromDB) {
-                            rotationList.add(ChampionIconHolderModel(data))
-                        }
 
-                        _rotationChampionListLiveData.postValue(rotationList)
-                        GlobalApplication.mySharedPreferences.setLong("getAllChampionData", System.currentTimeMillis())
+                        _setRotationChampionListCompleteLiveData.postValue(true)
+                        GlobalApplication.mySharedPreferences.setString("championDataVersion", version)
+                        GlobalApplication.mySharedPreferences.setLong("setRotationListTime", System.currentTimeMillis())
                     }
                 } catch (e: ConnectException) {
                     e.printStackTrace()
@@ -77,23 +80,26 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
                 }
             }
         } else {
-            // 만일 2분 전에 요청 시 캐싱된 데이터를 보여준다. 캐싱된 데이터가 비어있을 경우 다시 한번 메서드를 호출해서 서버와 통신해서 데이터를 받아온다.
-            // 데이터가 빈 경우는 모든 챔프는 다시 불러왔지만(Rotation 처리가 다 풀림) RotationList를 받아오기에는 2분이 안돼서 불러오지 않으면 데이터가 빈다.
-            val rotationListFromDB = myRepository.getAllRotationChampionList()
-
-            val rotationList = mutableListOf<ChampionIconHolderModel>()
-            for (data in rotationListFromDB) {
-                rotationList.add(ChampionIconHolderModel(data))
-            }
-            _rotationChampionListLiveData.postValue(rotationList)
+            _setRotationChampionListCompleteLiveData.postValue(false)
         }
     }
 
-    fun getAllChampionData() {
-        val checkMinTimeForGetAllChampionData =
-            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getAllChampionData", 0) > 120000
+    fun getRotationChampionData() {
+        val rotationListFromDB = myRepository.getAllRotationChampionList()
 
-        if (checkMinTimeForGetAllChampionData) {
+        val rotationList = mutableListOf<ChampionIconHolderModel>()
+        for (data in rotationListFromDB) {
+            rotationList.add(ChampionIconHolderModel(data))
+        }
+
+        _rotationChampionList.postValue(rotationList)
+    }
+
+    fun getAllChampionData(version: String) {
+        val checkVersionForGetChampionData =
+            version != GlobalApplication.mySharedPreferences.getString("championDataVersion", "NO_VERSION")
+
+        if (checkVersionForGetChampionData) {
             myRepository.clearChampionInfo()
             CoroutineScope(Dispatchers.IO).launch {
                 myRepository.getAllChampionData().let {
@@ -135,6 +141,5 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
             val championList = myRepository.getAllChampionInfo()
             _allChampionListLiveData.postValue(championList)
         }
-
     }
 }

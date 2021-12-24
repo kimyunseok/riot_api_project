@@ -36,65 +36,19 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         setUpNavigationRecyclerView()
 
         setUpObserver()
-        getRankingDataAtLocalDB()
 
+        // Caching Data 가져오기.
+        getRankingDataAtLocalDB()
         getRotationList()
 
-        //최소 데이터갱신 2분.
+        // 서버에서 데이터 가져오기 (최소 데이터갱신 2분.)
+        setRotationList()
         getRankingData()
     }
 
     private fun setUpObserver() {
-        // Step 1. 랭킹 정보 저장돼 있던 것 보여주기.
-        userInfoViewModel.userInfoAtLocalDBListLiveData.observe(viewLifecycleOwner) {
-            setUpRankingRecyclerView(it)
-        }
-
-        // Step 2. 랭킹 정보 서버에서 불러오기
-        userInfoViewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
-                rankingData ->
-            if(rankingData != null && rankingData.code == 200) {
-                userInfoViewModel.getRankingUserInfoListByRankingDataFromServer()
-            } else {
-                //Can't Get Ranking List
-                Toast.makeText(context, context?.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        userInfoViewModel.userInfoListLiveData.observe(viewLifecycleOwner) {
-            // Step 3. 불러온 랭킹 정보의 id로 유저 정보(icon, Level) 불러온 후 리사이클러뷰 셋팅
-            if(userInfoViewModel.rankingRoomDBLoad.not()) {
-                setUpRankingRecyclerView(it)
-            } else {
-                refreshRankingRecyclerView(it)
-            }
-
-            // Step 4. 불러온 랭킹 정보 이미지는 캐시에 저장하고 유저 정보는 Room DB에 저장
-            userInfoViewModel.clearUserInfoAtLocalDB()
-
-            for(data in it) {
-                // 4 - 1. 유저 아이콘 캐싱
-                context?.let { mContext ->
-                    val type = "png"
-                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.getIconID().toString(), type).not()) {
-                        ImageSaveUtil(mContext)
-                            .imageToCache(
-                                data.getIconID().toString(),
-                                mContext.getString(R.string.profile_icon_url),
-                                type,
-                                ""
-                            )
-                    }
-                }
-
-                // 4 - 2. 유저 정보 Room DB에 저장(캐싱)
-                userInfoViewModel.saveUserInfoAtLocalDB(data.userInfo)
-            }
-        }
-
         //Rotation 챔피언 리스트 불러옴.
-        championInfoViewModel.rotationChampionListLiveData.observe(viewLifecycleOwner) {
-
+        championInfoViewModel.rotationChampionList.observe(viewLifecycleOwner) {
             //이미지 캐싱
             for(data in it) {
                 context?.let { mContext ->
@@ -115,6 +69,58 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
             championList.sortWith(compareBy { data -> data.championInfo.championName })
             setUpRotationChampionRecyclerView(championList)
         }
+
+        // 랭킹 정보 저장돼 있던 것 보여주기.
+        userInfoViewModel.userInfoAtLocalDBListLiveData.observe(viewLifecycleOwner) {
+            setUpRankingRecyclerView(it)
+        }
+
+        // 랭킹 정보 서버에서 불러온 데이터
+        userInfoViewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
+                rankingData ->
+            if(rankingData != null && rankingData.code == 200) {
+                userInfoViewModel.getRankingUserInfoListByRankingDataFromServer()
+            } else {
+                //Can't Get Ranking List
+                Toast.makeText(context, context?.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        userInfoViewModel.userInfoListLiveData.observe(viewLifecycleOwner) {
+            // 불러온 랭킹 정보의 id로 유저 정보(icon, Level) 불러온 후 리사이클러뷰 셋팅
+            if(userInfoViewModel.rankingRoomDBLoad.not()) {
+                setUpRankingRecyclerView(it)
+            } else {
+                refreshRankingRecyclerView(it)
+            }
+
+            // 불러온 랭킹 정보 이미지는 캐시에 저장하고 유저 정보는 Room DB에 저장
+            userInfoViewModel.clearUserInfoAtLocalDB()
+
+            for(data in it) {
+                // 유저 아이콘 캐싱
+                context?.let { mContext ->
+                    val type = "png"
+                    if(ImageSaveUtil(mContext).checkAlreadySaved(data.getIconID().toString(), type).not()) {
+                        ImageSaveUtil(mContext)
+                            .imageToCache(
+                                data.getIconID().toString(),
+                                mContext.getString(R.string.profile_icon_url),
+                                type,
+                                ""
+                            )
+                    }
+                }
+
+                // 유저 정보 Room DB에 저장(캐싱)
+                userInfoViewModel.saveUserInfoAtLocalDB(data.userInfo)
+            }
+        }
+
+        // 로테이션 리스트 새로 불러왔다면 getRotationList() 호출.
+        championInfoViewModel.setRotationChampionListCompleteLiveData.observe(viewLifecycleOwner) {
+            getRotationList()
+        }
     }
 
     private fun getRankingDataAtLocalDB() {
@@ -125,8 +131,12 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         userInfoViewModel.getRankingDataFromServer()
     }
 
+    private fun setRotationList() {
+        championInfoViewModel.setRotationListFromServer(context?.getString(R.string.lol_version).toString())
+    }
+
     private fun getRotationList() {
-        championInfoViewModel.getRotationList()
+        championInfoViewModel.getRotationChampionData()
     }
 
     private fun setUpRankingRecyclerView(itemList: List<UserInfoHolderModel>) {
