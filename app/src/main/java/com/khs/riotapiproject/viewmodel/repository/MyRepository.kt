@@ -19,7 +19,8 @@ class MyRepository {
 
     // Retrofit2, Riot API 호출
     suspend fun getRanking() = riotRetrofit.getRanking()
-    suspend fun getSummonerInfoById(encryptedSummonerId: String) = riotRetrofit.getSummonerInfoById(encryptedSummonerId = encryptedSummonerId)
+    suspend fun getSummonerInfoById(encryptedSummonerId: String) = riotRetrofit.getSummonerInfoById(encryptedSummonerId)
+    suspend fun getSummonerInfoByName(summonerName: String) = riotRetrofit.getSummonerInfoByName(summonerName)
     suspend fun getRotationChampionList() = riotRetrofit.getRotationChampionList()
     suspend fun getSummonerLeagueInfoById(encryptedSummonerId: String) = riotRetrofit.getSummonerLeagueInfoById(encryptedSummonerId)
 
@@ -33,7 +34,8 @@ class MyRepository {
 
     // User Info - SQLite
     fun insertUserInfo(userInfo: UserInfo) = userLeagueInfoDB.insertUserInfo(userInfo)
-    fun getUserInfoBySummonerID(summonerID: String) = userLeagueInfoDB.getUserInfoBySummonerID(summonerID)
+    fun getUserInfoBySummonerName(summonerName: String) = userLeagueInfoDB.getUserInfoBySummonerName(summonerName)
+    fun deleteUserInfoBySummonerName(summonerName: String) = userLeagueInfoDB.deleteUserInfoBySummonerName(summonerName)
 
     // Champion - SQLite
     fun getAllChampionInfo() = championInfoDB.getAllChampionInfo()

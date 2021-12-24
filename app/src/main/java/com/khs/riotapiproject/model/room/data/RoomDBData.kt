@@ -33,19 +33,19 @@ data class ChampionInfo(
 
 @Entity
 data class UserInfo(
-    @PrimaryKey(autoGenerate = true) var userDetailInfoID: Long,
+    @PrimaryKey(autoGenerate = true) var userInfoID: Long,
     val summonerID: String,
     val iconID: Int,
     val userName: String,
-    val userLevel: String,
+    val userLevel: Int,
     val soloRankTier: String,
     val soloRankStage: String,
-    val soloRankPoint: String,
+    val soloRankPoint: Int,
     val soloRankWins: Int,
     val soloRankLosses: Int,
     val freeRankTier: String,
     val freeRankStage: String,
-    val freeRankPoint: String,
+    val freeRankPoint: Int,
     val freeRankWins: Int,
     val freeRankLosses: Int
 )

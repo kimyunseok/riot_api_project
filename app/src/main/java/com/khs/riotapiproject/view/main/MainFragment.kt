@@ -1,5 +1,6 @@
 package com.khs.riotapiproject.view.main
 
+import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import com.khs.riotapiproject.util.ImageSaveUtil
 import com.khs.riotapiproject.util.UserInfoHolderModelDiffUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.view.info.ChampionListFragment
+import com.khs.riotapiproject.view.info.UserInfoFragment
 import com.khs.riotapiproject.viewmodel.aac.ChampionRotationViewModel
 import com.khs.riotapiproject.viewmodel.aac.UserSoloRankTop10ViewModel
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
@@ -134,7 +136,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun setUpRankingRecyclerView(itemList: List<UserInfoHolderModel>) {
-        rankingRecyclerViewAdapter = SoloRankingRecyclerViewAdapter(itemList)
+        rankingRecyclerViewAdapter = SoloRankingRecyclerViewAdapter(itemList, ::showUserInfoFragment)
         viewDataBinding.soloRankRecyclerView.apply {
             adapter = rankingRecyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
@@ -174,7 +176,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
     private fun setUpBtnListener() {
         viewDataBinding.searchBtn.setOnClickListener {
-            //TODO : 유저 검색 기능
+            showUserInfoFragment(viewDataBinding.inputSummonerName.toString())
         }
 
         viewDataBinding.mainMenuBtn.setOnClickListener {
@@ -194,6 +196,19 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     private fun showReadyToastMessage() {
         viewDataBinding.mainDrawerLayout.closeDrawer(GravityCompat.START)
         Toast.makeText(context, context?.getString(R.string.ready_job), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showUserInfoFragment(userName: String) {
+        val bundle = Bundle().apply { putString("summonerName", userName) }
+
+        activity?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(
+                R.id.main_container,
+                UserInfoFragment().apply { arguments = bundle }
+            )
+            ?.addToBackStack(null)
+            ?.commit()
     }
 
 }

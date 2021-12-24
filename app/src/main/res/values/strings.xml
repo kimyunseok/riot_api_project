@@ -30,4 +30,8 @@
     <!-- Champion List -->
     <string name="champion_list">챔피언 목록</string>
 
+    <!-- User Info -->
+    <string name="solo_rank">솔로 랭크</string>
+    <string name="free_rank">자유 랭크</string>
+
 </resources>

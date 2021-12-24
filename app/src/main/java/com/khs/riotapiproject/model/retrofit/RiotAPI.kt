@@ -3,6 +3,7 @@ package com.khs.riotapiproject.model.retrofit
 import com.khs.riotapiproject.model.retrofit.data.RankingData
 import com.khs.riotapiproject.model.retrofit.data.RotationChampionData
 import com.khs.riotapiproject.model.retrofit.data.SummonerInfoData
+import com.khs.riotapiproject.model.retrofit.data.SummonerLeagueInfoDetailData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,6 +15,12 @@ interface RiotAPI {
     @GET("/lol/summoner/v4/summoners/{encryptedSummonerId}")
     suspend fun getSummonerInfoById(@Path("encryptedSummonerId") encryptedSummonerId: String): Response<SummonerInfoData>
 
+    @GET("/lol/summoner/v4/summoners/by-name/{summonerName}")
+    suspend fun getSummonerInfoByName(@Path("summonerName") summonerName: String): Response<SummonerInfoData>
+
     @GET("/lol/platform/v3/champion-rotations")
     suspend fun getRotationChampionList(): Response<RotationChampionData>
+
+    @GET("/lol/league/v4/entries/by-summoner/{encryptedSummonerId}")
+    suspend fun getSummonerLeagueInfoById(@Path("encryptedSummonerId") encryptedSummonerId: String): Response<List<SummonerLeagueInfoDetailData>>
 }

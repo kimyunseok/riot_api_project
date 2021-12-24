@@ -10,7 +10,9 @@ interface UserInfoDAO {
     @Insert
     fun insertUserInfo(userInfo: UserInfo)
 
-    @Query("SELECT * FROM UserInfo WHERE summonerID = :summonerID")
-    fun getUserInfoBySummonerID(summonerID: String): UserInfo
+    @Query("SELECT * FROM UserInfo WHERE userName = :userName")
+    fun getUserInfoBySummonerName(userName: String): UserInfo?
 
+    @Query("DELETE FROM UserInfo WHERE userName = :userName")
+    fun deleteUserInfoBySummonerName(userName: String)
 }

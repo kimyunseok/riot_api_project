@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.riotapiproject.databinding.HolderSoloRankUserInfoBinding
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 
-class SoloRankingRecyclerViewAdapter(var itemList: List<UserInfoHolderModel>): RecyclerView.Adapter<SoloRankingRecyclerViewAdapter.SoloRankingRecyclerViewHolder>() {
+class SoloRankingRecyclerViewAdapter(var itemList: List<UserInfoHolderModel>, val onClick: (String) -> Unit): RecyclerView.Adapter<SoloRankingRecyclerViewAdapter.SoloRankingRecyclerViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -28,6 +28,10 @@ class SoloRankingRecyclerViewAdapter(var itemList: List<UserInfoHolderModel>): R
     inner class SoloRankingRecyclerViewHolder(private val viewDataBinding: HolderSoloRankUserInfoBinding): RecyclerView.ViewHolder(viewDataBinding.root) {
         fun bind(item: UserInfoHolderModel) {
             viewDataBinding.model = item
+
+            itemView.setOnClickListener {
+                onClick(item.userRankingInfo.name)
+            }
         }
     }
 }
