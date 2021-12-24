@@ -14,7 +14,6 @@ import com.khs.riotapiproject.util.ImageSaveUtil
 import com.khs.riotapiproject.util.UserInfoHolderModelDiffUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.view.info.ChampionListFragment
-import com.khs.riotapiproject.viewmodel.aac.ChampionInfoViewModel
 import com.khs.riotapiproject.viewmodel.aac.ChampionRotationViewModel
 import com.khs.riotapiproject.viewmodel.aac.UserSoloRankTop10ViewModel
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
@@ -92,7 +91,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
 
             // OLD Data Remove.
             for(data in it) {
-                userSoloRankTop10ViewModel.deleteUserInfoAtLocalDB(data.userInfo.summonerID)
+                userSoloRankTop10ViewModel.deleteUserInfoAtLocalDB(data.userRankingInfo.summonerID)
             }
 
             // 불러온 랭킹 정보 이미지는 캐시에 저장하고 유저 정보는 Room DB에 저장
@@ -113,7 +112,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                 }
 
                 // 유저 정보 Room DB에 저장(캐싱)
-                userSoloRankTop10ViewModel.saveUserInfoAtLocalDB(data.userInfo)
+                userSoloRankTop10ViewModel.saveUserInfoAtLocalDB(data.userRankingInfo)
             }
         }
     }

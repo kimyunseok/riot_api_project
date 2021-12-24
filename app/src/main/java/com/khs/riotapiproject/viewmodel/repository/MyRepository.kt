@@ -5,15 +5,15 @@ import com.khs.riotapiproject.common.GlobalApplication.Companion.riotAPIService
 import com.khs.riotapiproject.model.retrofit.DDragonAPI
 import com.khs.riotapiproject.model.retrofit.RiotAPI
 import com.khs.riotapiproject.model.room.data.ChampionInfo
+import com.khs.riotapiproject.model.room.data.UserRankingInfo
 import com.khs.riotapiproject.model.room.data.UserInfo
-import com.khs.riotapiproject.model.room.data.UserLeagueInfo
 import com.khs.riotapiproject.model.room.database.AppDataBase
 
 class MyRepository {
     private val riotRetrofit = riotAPIService.create(RiotAPI::class.java)
     private val ddragonRetrofit = dDragonAPIService.create(DDragonAPI::class.java)
 
-    private val userInfoDB = AppDataBase.roomDBInstance.userInfoDAO()
+    private val userInfoDB = AppDataBase.roomDBInstance.userRankingInfoDAO()
     private val userLeagueInfoDB = AppDataBase.roomDBInstance.userLeagueInfoDAO()
     private val championInfoDB = AppDataBase.roomDBInstance.championInfoDAO()
 
@@ -26,14 +26,14 @@ class MyRepository {
     //Retrofit2, DDragon API 호출
     suspend fun getAllChampionData(version: String) = ddragonRetrofit.getAllChampionData(version)
 
-    // User - SQLite
-    fun getAllUserInfo() = userInfoDB.getAllUserInfo()
-    fun deleteUserInfo(summonerID: String) = userInfoDB.deleteUserInfo(summonerID)
-    fun insertUserInfo(userInfo: UserInfo) = userInfoDB.insertUserInfo(userInfo)
+    // User Ranking - SQLite
+    fun getAllUserRankingInfo() = userInfoDB.getAllUserRankingInfo()
+    fun deleteUserRankingInfo(summonerID: String) = userInfoDB.deleteUserRankingInfo(summonerID)
+    fun insertUserRankingInfo(userRankingInfo: UserRankingInfo) = userInfoDB.insertUserRankingInfo(userRankingInfo)
 
-    // User League Info - SQLite
-    fun insertUserLeagueInfo(userLeagueInfo: UserLeagueInfo) = userLeagueInfoDB.insertUserLeagueInfo(userLeagueInfo)
-    fun getUserLeagueInfoBySummonerID(summonerID: String) = userLeagueInfoDB.getUserLeagueInfoBySummonerID(summonerID)
+    // User Info - SQLite
+    fun insertUserInfo(userInfo: UserInfo) = userLeagueInfoDB.insertUserInfo(userInfo)
+    fun getUserInfoBySummonerID(summonerID: String) = userLeagueInfoDB.getUserInfoBySummonerID(summonerID)
 
     // Champion - SQLite
     fun getAllChampionInfo() = championInfoDB.getAllChampionInfo()

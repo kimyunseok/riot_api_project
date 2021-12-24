@@ -13,7 +13,7 @@ class UserInfoHolderModelDiffUtil(val oldList: MutableList<UserInfoHolderModel>,
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].userInfo.userInfoID == newList[newItemPosition].userInfo.userInfoID
+        return oldList[oldItemPosition].userRankingInfo.userInfoID == newList[newItemPosition].userRankingInfo.userInfoID
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

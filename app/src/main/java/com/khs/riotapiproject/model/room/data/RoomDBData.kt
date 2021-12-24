@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class UserInfo(
+data class UserRankingInfo(
     @PrimaryKey(autoGenerate = true) var userInfoID: Long,
     val summonerID: String,
     val iconID: Int,
@@ -29,4 +29,23 @@ data class ChampionInfo(
     val championTitle: String,
     val championDescription: String,
     var isRotation: Boolean
+)
+
+@Entity
+data class UserInfo(
+    @PrimaryKey(autoGenerate = true) var userDetailInfoID: Long,
+    val summonerID: String,
+    val iconID: Int,
+    val userName: String,
+    val userLevel: String,
+    val soloRankTier: String,
+    val soloRankStage: String,
+    val soloRankPoint: String,
+    val soloRankWins: Int,
+    val soloRankLosses: Int,
+    val freeRankTier: String,
+    val freeRankStage: String,
+    val freeRankPoint: String,
+    val freeRankWins: Int,
+    val freeRankLosses: Int
 )

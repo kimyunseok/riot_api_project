@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.model.retrofit.data.RankingData
-import com.khs.riotapiproject.model.room.data.UserInfo
+import com.khs.riotapiproject.model.room.data.UserRankingInfo
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import com.khs.riotapiproject.viewmodel.ui.UserInfoHolderModel
 import kotlinx.coroutines.CoroutineScope
@@ -60,24 +60,24 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
     }
 
     fun getRankingDataFromLocalDB() {
-        myRepository.getAllUserInfo().let {
+        myRepository.getAllUserRankingInfo().let {
             val rankList = mutableListOf<UserInfoHolderModel>()
             for(userInfo in it) {
                 rankList.add(UserInfoHolderModel(userInfo))
             }
             if(rankList.isNotEmpty()) {
-                rankList.sortWith(compareBy { userModel -> userModel.userInfo.rank })
+                rankList.sortWith(compareBy { userModel -> userModel.userRankingInfo.rank })
                 _soloRankTop10AtLocalDBListLiveData.postValue(rankList)
             }
         }
     }
 
     fun deleteUserInfoAtLocalDB(summonerID: String) {
-        myRepository.deleteUserInfo(summonerID)
+        myRepository.deleteUserRankingInfo(summonerID)
     }
 
-    fun saveUserInfoAtLocalDB(userInfo: UserInfo) {
-        myRepository.insertUserInfo(userInfo)
+    fun saveUserInfoAtLocalDB(userRankingInfo: UserRankingInfo) {
+        myRepository.insertUserRankingInfo(userRankingInfo)
     }
 
     private suspend fun setTop10Rank(rankList: List<RankingData.RankingDataDetail>) {
@@ -103,7 +103,7 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
                         it.code = response.code()
                         it.message = response.message()
 
-                        val userInfo = UserInfo(
+                        val userInfo = UserRankingInfo(
                             0,
                             it.id,
                             it.profileIconId,
