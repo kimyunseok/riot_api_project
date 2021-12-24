@@ -34,6 +34,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     lateinit var rankingRecyclerViewAdapter: SoloRankingRecyclerViewAdapter
 
     override fun init() {
+        viewDataBinding.inputSummonerName = ""
         setUpBtnListener()
         setUpNavigationRecyclerView()
 
@@ -199,16 +200,20 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun showUserInfoFragment(userName: String) {
-        val bundle = Bundle().apply { putString("summonerName", userName) }
+        if(userName.trim().isNotEmpty()) {
+            val bundle = Bundle().apply { putString("summonerName", userName) }
 
-        activity?.supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(
-                R.id.main_container,
-                UserInfoFragment().apply { arguments = bundle }
-            )
-            ?.addToBackStack(null)
-            ?.commit()
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(
+                    R.id.main_container,
+                    UserInfoFragment().apply { arguments = bundle }
+                )
+                ?.addToBackStack(null)
+                ?.commit()
+        } else {
+            Toast.makeText(context, context?.getString(R.string.input_searching_summoner_name), Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
