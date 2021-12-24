@@ -132,8 +132,8 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
         }
     }
 
-    fun clearUserInfoAtLocalDB() {
-        myRepository.clearUserInfo()
+    fun deleteUserInfoAtLocalDB(summonerID: String) {
+        myRepository.deleteUserInfo(summonerID)
     }
 
     fun saveUserInfoAtLocalDB(userInfo: UserInfo) {

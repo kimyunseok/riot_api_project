@@ -95,9 +95,12 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                 refreshRankingRecyclerView(it)
             }
 
-            // 불러온 랭킹 정보 이미지는 캐시에 저장하고 유저 정보는 Room DB에 저장
-            userSoloRankTop10ViewModel.clearUserInfoAtLocalDB()
+            // OLD Data Remove.
+            for(data in it) {
+                userSoloRankTop10ViewModel.deleteUserInfoAtLocalDB(data.userInfo.summonerID)
+            }
 
+            // 불러온 랭킹 정보 이미지는 캐시에 저장하고 유저 정보는 Room DB에 저장
             for(data in it) {
                 // 유저 아이콘 캐싱
                 context?.let { mContext ->

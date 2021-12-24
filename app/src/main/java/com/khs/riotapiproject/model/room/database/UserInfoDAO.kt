@@ -13,6 +13,6 @@ interface UserInfoDAO {
     @Query("SELECT * FROM UserInfo")
     fun getAllUserInfo(): List<UserInfo>
 
-    @Query("DELETE FROM UserInfo")
-    fun clearUserInfo()
+    @Query("DELETE FROM UserInfo WHERE summonerID = :summonerID")
+    fun deleteUserInfo(summonerID: String)
 }
