@@ -15,12 +15,6 @@ import kotlinx.coroutines.launch
 import java.net.ConnectException
 
 class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewModel() {
-    private val _rankingDataLiveData = MutableLiveData<RankingData>()
-    val rankingDataLiveData: LiveData<RankingData>
-        get() = _rankingDataLiveData
-    private val rankingDataDetailListValue: MutableList<RankingData.RankingDataDetail>
-        get() = rankingDataLiveData.value?.entries?: mutableListOf()
-
     private val _soloRankTop10AtLocalDBListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
     val soloRankTop10AtLocalDBListLiveData: LiveData<List<UserInfoHolderModel>>
         get() = _soloRankTop10AtLocalDBListLiveData
@@ -50,71 +44,15 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
                                 rankList ->
                             rankList.sortWith(compareBy { it.leaguePoints })
                             rankList.reverse()
+
+                            setTop10Rank(rankList)
+                            GlobalApplication.mySharedPreferences.setLong("getRankingDataTime", System.currentTimeMillis())
                         }
-                        _rankingDataLiveData.postValue(response.body())
-                        GlobalApplication.mySharedPreferences.setLong("getRankingDataTime", System.currentTimeMillis())
+
                     }
                 } catch (e: ConnectException) {
                     e.printStackTrace()
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
-    fun getRankingUserInfoListByRankingDataFromServer() {
-        val checkMinTimeForGetRankingUserInfo =
-            System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("getRankingUserInfoTime", 0) > 120000
-
-        if(checkMinTimeForGetRankingUserInfo) {
-            GlobalApplication.mySharedPreferences.setLong("getRankingUserInfoTime", System.currentTimeMillis())
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val rankList = mutableListOf<UserInfoHolderModel>()
-
-                    val maxLength = if (rankingDataDetailListValue.size > 10) {
-                        10
-                    } else {
-                        rankingDataDetailListValue.size
-                    }
-
-                    for (idx in 0 until maxLength) {
-                        myRepository.getSummonerInfoById(rankingDataDetailListValue[idx].summonerId)
-                            .let { response ->
-
-                                Log.d(
-                                    "UserInfoViewModel",
-                                    "Get Ranking User Info API. code : ${response.code()}, message : ${response.message()}"
-                                )
-
-                                response.body()?.let {
-                                    it.code = response.code()
-                                    it.message = response.message()
-
-                                    val userInfo = UserInfo(
-                                        0,
-                                        it.id,
-                                        it.profileIconId,
-                                        it.name,
-                                        "CHALLENGER",
-                                        "",
-                                        "${rankingDataDetailListValue[idx].leaguePoints}",
-                                        it.summonerLevel,
-                                        idx + 1,
-                                        rankingDataDetailListValue[idx].wins,
-                                        rankingDataDetailListValue[idx].losses
-                                    )
-
-                                    rankList.add(UserInfoHolderModel(userInfo))
-                                }
-                            }
-                    }
-
-                    _soloRankTop10ListFromServerLiveData.postValue(rankList)
-                } catch (e: ConnectException) {
-                    e.printStackTrace()
-                } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                 }
             }
@@ -140,6 +78,51 @@ class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewMo
 
     fun saveUserInfoAtLocalDB(userInfo: UserInfo) {
         myRepository.insertUserInfo(userInfo)
+    }
+
+    private suspend fun setTop10Rank(rankList: List<RankingData.RankingDataDetail>) {
+        val holderModelList = mutableListOf<UserInfoHolderModel>()
+
+        val maxLength = if (rankList.size > 10) {
+            10
+        } else {
+            rankList.size
+        }
+
+
+        for (idx in 0 until maxLength) {
+            myRepository.getSummonerInfoById(rankList[idx].summonerId)
+                .let { response ->
+
+                    Log.d(
+                        "UserInfoViewModel",
+                        "Get Ranking User Info API. code : ${response.code()}, message : ${response.message()}"
+                    )
+
+                    response.body()?.let {
+                        it.code = response.code()
+                        it.message = response.message()
+
+                        val userInfo = UserInfo(
+                            0,
+                            it.id,
+                            it.profileIconId,
+                            it.name,
+                            "CHALLENGER",
+                            "",
+                            "${rankList[idx].leaguePoints}",
+                            it.summonerLevel,
+                            idx + 1,
+                            rankList[idx].wins,
+                            rankList[idx].losses
+                        )
+
+                        holderModelList.add(UserInfoHolderModel(userInfo))
+                    }
+                }
+        }
+
+        _soloRankTop10ListFromServerLiveData.postValue(holderModelList)
     }
 
 }

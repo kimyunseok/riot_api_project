@@ -72,20 +72,14 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
             setUpRotationChampionRecyclerView(championList)
         }
 
+        // 로테이션 리스트 새로 불러왔다면 getRotationList() 호출.
+        championRotationViewModel.setRotationChampionListCompleteLiveData.observe(viewLifecycleOwner) {
+            getRotationList()
+        }
+
         // 랭킹 정보 저장돼 있던 것 보여주기.
         userSoloRankTop10ViewModel.soloRankTop10AtLocalDBListLiveData.observe(viewLifecycleOwner) {
             setUpRankingRecyclerView(it)
-        }
-
-        // 랭킹 정보 서버에서 불러온 데이터
-        userSoloRankTop10ViewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
-                rankingData ->
-            if(rankingData != null && rankingData.code == 200) {
-                userSoloRankTop10ViewModel.getRankingUserInfoListByRankingDataFromServer()
-            } else {
-                //Can't Get Ranking List
-                Toast.makeText(context, context?.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
-            }
         }
 
         userSoloRankTop10ViewModel.soloRankTop10ListFromServerLiveData.observe(viewLifecycleOwner) {
@@ -121,11 +115,6 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                 // 유저 정보 Room DB에 저장(캐싱)
                 userSoloRankTop10ViewModel.saveUserInfoAtLocalDB(data.userInfo)
             }
-        }
-
-        // 로테이션 리스트 새로 불러왔다면 getRotationList() 호출.
-        championRotationViewModel.setRotationChampionListCompleteLiveData.observe(viewLifecycleOwner) {
-            getRotationList()
         }
     }
 
