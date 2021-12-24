@@ -68,84 +68,56 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
                                     leagueInfoResponse.body()?.let { leagueInfo ->
                                         myRepository.deleteUserInfoBySummonerName(summonerName)
 
-                                        val userInfo = when {
-                                            leagueInfo.isEmpty() || leagueInfo[0].tier == null -> {
-                                                UserInfo(
-                                                    0,
-                                                    summonerInfo.id,
-                                                    summonerInfo.profileIconId,
-                                                    summonerName,
-                                                    summonerInfo.summonerLevel,
-                                                    "NO_TIER",
-                                                    "",
-                                                    0,
-                                                    0,
-                                                    0,
-                                                    "NO_TIER",
-                                                    "",
-                                                    0,
-                                                    0,
-                                                    0,
-                                                )
-                                            }
-                                            leagueInfo.size == 1 || leagueInfo[1].tier == null -> {
-                                                UserInfo(
-                                                    0,
-                                                    summonerInfo.id,
-                                                    summonerInfo.profileIconId,
-                                                    summonerName,
-                                                    summonerInfo.summonerLevel,
-                                                    leagueInfo[0].tier.toString(),
-                                                    leagueInfo[0].rank.toString(),
-                                                    leagueInfo[0].leaguePoints,
-                                                    leagueInfo[0].wins,
-                                                    leagueInfo[0].losses,
-                                                    "NO_TIER",
-                                                    "",
-                                                    0,
-                                                    0,
-                                                    0,
-                                                )
-                                            }
-                                            else -> {
-                                                UserInfo(
-                                                    0,
-                                                    summonerInfo.id,
-                                                    summonerInfo.profileIconId,
-                                                    summonerName,
-                                                    summonerInfo.summonerLevel,
-                                                    leagueInfo[0].tier.toString(),
-                                                    leagueInfo[0].rank.toString(),
-                                                    leagueInfo[0].leaguePoints,
-                                                    leagueInfo[0].wins,
-                                                    leagueInfo[0].losses,
-                                                    leagueInfo[1].tier.toString(),
-                                                    leagueInfo[1].rank.toString(),
-                                                    leagueInfo[1].leaguePoints,
-                                                    leagueInfo[1].wins,
-                                                    leagueInfo[1].losses
-                                                )
-                                            }
-                                        }
+                                        val userInfo = UserInfo(
+                                            0,
+                                            summonerInfo.id,
+                                            summonerInfo.profileIconId,
+                                            summonerName,
+                                            summonerInfo.summonerLevel,
+                                            "NO_TIER",
+                                            "",
+                                            0,
+                                            0,
+                                            0,
+                                            "NO_TIER",
+                                            "",
+                                            0,
+                                            0,
+                                            0,
+                                        )
 
-                                        if(leagueInfo.isNotEmpty() && leagueInfo[0].tier != null) {
-                                            setSoloRankTierFormat(
-                                                leagueInfo[0].tier.toString(),
-                                                leagueInfo[0].rank.toString(),
-                                                leagueInfo[0].leaguePoints,
-                                                leagueInfo[0].wins,
-                                                leagueInfo[0].losses
-                                            )
-                                        }
-
-                                        if(leagueInfo.size > 1 && leagueInfo[1].tier != null) {
-                                            setFreeRankTierFormat(
-                                                leagueInfo[1].tier.toString(),
-                                                leagueInfo[1].rank.toString(),
-                                                leagueInfo[1].leaguePoints,
-                                                leagueInfo[1].wins,
-                                                leagueInfo[1].losses
-                                            )
+                                        for(leagueInfoData in leagueInfo) {
+                                            if(leagueInfoData.queueType == "RANKED_SOLO_5x5" && leagueInfoData.tier != null) {
+                                                userInfo.apply {
+                                                    soloRankTier = leagueInfoData.tier.toString()
+                                                    soloRankStage = leagueInfoData.rank.toString()
+                                                    soloRankPoint = leagueInfoData.leaguePoints
+                                                    soloRankWins = leagueInfoData.wins
+                                                    soloRankLosses = leagueInfoData.losses
+                                                }
+                                                setSoloRankTierFormat(
+                                                    leagueInfoData.tier.toString(),
+                                                    leagueInfoData.rank.toString(),
+                                                    leagueInfoData.leaguePoints,
+                                                    leagueInfoData.wins,
+                                                    leagueInfoData.losses
+                                                )
+                                            } else if(leagueInfoData.queueType == "RANKED_FLEX_SR" && leagueInfoData.tier != null) {
+                                                userInfo.apply {
+                                                    freeRankTier = leagueInfoData.tier.toString()
+                                                    freeRankStage = leagueInfoData.rank.toString()
+                                                    freeRankPoint = leagueInfoData.leaguePoints
+                                                    freeRankWins = leagueInfoData.wins
+                                                    freeRankLosses = leagueInfoData.losses
+                                                }
+                                                setFreeRankTierFormat(
+                                                    leagueInfoData.tier.toString(),
+                                                    leagueInfoData.rank.toString(),
+                                                    leagueInfoData.leaguePoints,
+                                                    leagueInfoData.wins,
+                                                    leagueInfoData.losses
+                                                )
+                                            }
                                         }
 
                                         GlobalApplication.mySharedPreferences.setLong("get${summonerName}Info", System.currentTimeMillis())

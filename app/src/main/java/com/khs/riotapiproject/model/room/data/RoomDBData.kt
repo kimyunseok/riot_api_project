@@ -38,16 +38,16 @@ data class UserInfo(
     val iconID: Int,
     val userName: String,
     val userLevel: Int,
-    val soloRankTier: String,
-    val soloRankStage: String,
-    val soloRankPoint: Int,
-    val soloRankWins: Int,
-    val soloRankLosses: Int,
-    val freeRankTier: String,
-    val freeRankStage: String,
-    val freeRankPoint: Int,
-    val freeRankWins: Int,
-    val freeRankLosses: Int
+    var soloRankTier: String,
+    var soloRankStage: String,
+    var soloRankPoint: Int,
+    var soloRankWins: Int,
+    var soloRankLosses: Int,
+    var freeRankTier: String,
+    var freeRankStage: String,
+    var freeRankPoint: Int,
+    var freeRankWins: Int,
+    var freeRankLosses: Int
 )
 
 @Entity
