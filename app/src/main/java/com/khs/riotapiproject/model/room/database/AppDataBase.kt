@@ -5,14 +5,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.khs.riotapiproject.common.GlobalApplication
 import com.khs.riotapiproject.model.room.data.ChampionInfo
+import com.khs.riotapiproject.model.room.data.ChampionMastery
 import com.khs.riotapiproject.model.room.data.UserRankingInfo
 import com.khs.riotapiproject.model.room.data.UserInfo
 
-@Database(entities = [UserRankingInfo::class, ChampionInfo::class, UserInfo::class], version = 1)
+@Database(entities = [UserRankingInfo::class, ChampionInfo::class, UserInfo::class, ChampionMastery::class], version = 1)
 abstract class AppDataBase: RoomDatabase() {
     abstract fun userRankingInfoDAO(): UserRankingInfoDAO
     abstract fun championInfoDAO(): ChampionInfoDAO
     abstract fun userLeagueInfoDAO(): UserInfoDAO
+    abstract fun championMasteryDAO(): ChampionMasteryDAO
 
     companion object {
         val roomDBInstance = Room.databaseBuilder(

@@ -49,3 +49,15 @@ data class UserInfo(
     val freeRankWins: Int,
     val freeRankLosses: Int
 )
+
+@Entity
+data class ChampionMastery(
+    @PrimaryKey(autoGenerate = true) var championMasteryID: Long,
+    val summonerID: String,
+    val summonerName: String,
+    val championID: String,
+    val championKey: String,
+    val championName: String,
+    val championPoint: Int,
+    val recentPlayTime: String,
+)

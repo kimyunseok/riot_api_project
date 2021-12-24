@@ -93,3 +93,16 @@ data class SummonerLeagueInfoDetailData(
     @SerializedName("losses")
     val losses: Int,
 )
+
+data class SummonerChampionMasteryData(
+    @SerializedName("championId")
+    val championId: Int,
+    @SerializedName("championLevel")
+    val championLevel: Int,
+    @SerializedName("championPoints")
+    val championPoints: Int,
+    @SerializedName("lastPlayTime")
+    val lastPlayTime: Long,
+    @SerializedName("summonerId")
+    val summonerId: String,
+)

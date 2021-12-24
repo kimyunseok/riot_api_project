@@ -14,6 +14,7 @@ import com.khs.riotapiproject.databinding.FragmentMainBinding
 import com.khs.riotapiproject.util.ImageSaveUtil
 import com.khs.riotapiproject.util.UserRankingHolderModelDiffUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
+import com.khs.riotapiproject.view.info.ChampionInfoFragment
 import com.khs.riotapiproject.view.info.ChampionListFragment
 import com.khs.riotapiproject.view.info.UserInfoFragment
 import com.khs.riotapiproject.viewmodel.aac.ChampionRotationViewModel

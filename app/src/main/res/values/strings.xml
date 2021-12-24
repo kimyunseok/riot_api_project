@@ -34,6 +34,7 @@
     <!-- User Info -->
     <string name="solo_rank">솔로 랭크</string>
     <string name="free_rank">자유 랭크</string>
+    <string name="most_champion">모스트 챔피언 (TOP 5)</string>
     <string name="no_found">해당하는 소환사를 찾지 못했습니다.</string>
 
 </resources>

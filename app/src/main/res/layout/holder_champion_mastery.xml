@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="model"
+            type="com.khs.riotapiproject.viewmodel.ui.ChampionMasteryHolderModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:padding="6dp">
+
+        <ImageView
+            android:id="@+id/champion_image_view"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:imageName="@{model.championMastery.championID}"
+            app:imageType="@{@string/png}"
+            app:imageURL="@{@string/champion_icon_url_front + @string/lol_version + @string/champion_icon_url_back}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/champion_name_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="6dp"
+            android:text="@{model.championMastery.championName}"
+            android:textColor="@color/black"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/champion_recent_play_text_view"
+            app:layout_constraintEnd_toStartOf="@+id/champion_mastery_text_view"
+            app:layout_constraintStart_toEndOf="@+id/champion_image_view"
+            app:layout_constraintTop_toTopOf="@id/champion_image_view" />
+
+        <TextView
+            android:id="@+id/champion_recent_play_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@{model.recentPlayFormat}"
+            android:textColor="@color/DarkGray"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/champion_name_text_view"
+            app:layout_constraintStart_toStartOf="@+id/champion_name_text_view"
+            app:layout_constraintTop_toBottomOf="@id/champion_name_text_view" />
+
+        <TextView
+            android:id="@+id/champion_mastery_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.masteryFormat}"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/champion_name_text_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

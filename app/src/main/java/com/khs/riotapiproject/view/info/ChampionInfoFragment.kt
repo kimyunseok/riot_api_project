@@ -1,5 +1,6 @@
 package com.khs.riotapiproject.view.info
 
+import android.util.Log
 import androidx.fragment.app.viewModels
 import com.khs.riotapiproject.R
 import com.khs.riotapiproject.databinding.FragmentChampionInfoBinding

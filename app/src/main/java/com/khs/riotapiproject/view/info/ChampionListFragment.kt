@@ -1,5 +1,6 @@
 package com.khs.riotapiproject.view.info
 
+import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.khs.riotapiproject.R
@@ -58,4 +59,5 @@ class ChampionListFragment: BaseFragmentForViewBinding<FragmentChampionListBindi
             layoutManager = GridLayoutManager(context, 4)
         }
     }
+
 }

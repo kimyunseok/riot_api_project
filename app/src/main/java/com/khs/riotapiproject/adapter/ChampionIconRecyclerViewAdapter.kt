@@ -45,5 +45,4 @@ class ChampionIconRecyclerViewAdapter(private val activity: FragmentActivity?, v
             ?.addToBackStack(null)
             ?.commit()
     }
-
 }
