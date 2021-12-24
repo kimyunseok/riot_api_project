@@ -92,7 +92,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="6dp"
                 android:gravity="center_vertical"
-                android:text="@{model.soloRankTier}"
+                android:text="@{model.tierFormat}"
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@id/user_tier_image_view"

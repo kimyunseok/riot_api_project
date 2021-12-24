@@ -4,6 +4,10 @@ import com.khs.riotapiproject.model.room.data.UserInfo
 
 class UserInfoHolderModel(val userInfo: UserInfo) {
 
+    fun getTierFormat(): String {
+        return "${userInfo.soloRankTier} ${userInfo.soloRankStage} ${userInfo.soloRankPoint}점"
+    }
+
     fun levelFormat(): String {
         return "Lv. ${userInfo.level}"
     }
@@ -13,16 +17,12 @@ class UserInfoHolderModel(val userInfo: UserInfo) {
     }
 
     fun winRatioFormat(): String {
-        val winRatio = (userInfo.wins * 100) / (userInfo.wins + userInfo.losses)
-        return "${userInfo.wins}승 ${userInfo.losses}패\n승률 : ${winRatio}%"
+        val winRatio = (userInfo.soloRankWins * 100) / (userInfo.soloRankWins + userInfo.soloRankLosses)
+        return "${userInfo.soloRankWins}승 ${userInfo.soloRankLosses}패\n승률 : ${winRatio}%"
     }
 
     fun getName(): String {
         return userInfo.name
-    }
-
-    fun getSoloRankTier(): String {
-        return userInfo.soloRankTier
     }
 
     fun getIconID(): Int {

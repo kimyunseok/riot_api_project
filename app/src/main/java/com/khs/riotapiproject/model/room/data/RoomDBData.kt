@@ -11,10 +11,12 @@ data class UserInfo(
     val iconID: Int,
     val name: String,
     val soloRankTier: String,
+    val soloRankStage: String,
+    val soloRankPoint: String,
     val level: Int,
     val rank: Int,
-    val wins: Int,
-    val losses: Int
+    val soloRankWins: Int,
+    val soloRankLosses: Int
 )
 
 @Entity
