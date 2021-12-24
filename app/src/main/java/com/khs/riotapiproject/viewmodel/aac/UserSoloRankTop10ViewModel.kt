@@ -14,22 +14,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.ConnectException
 
-class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
+class UserSoloRankTop10ViewModel(private val myRepository: MyRepository): ViewModel() {
     private val _rankingDataLiveData = MutableLiveData<RankingData>()
     val rankingDataLiveData: LiveData<RankingData>
         get() = _rankingDataLiveData
     private val rankingDataDetailListValue: MutableList<RankingData.RankingDataDetail>
         get() = rankingDataLiveData.value?.entries?: mutableListOf()
 
-    private val _userInfoAtLocalDBListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
-    val userInfoAtLocalDBListLiveData: LiveData<List<UserInfoHolderModel>>
-        get() = _userInfoAtLocalDBListLiveData
+    private val _soloRankTop10AtLocalDBListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
+    val soloRankTop10AtLocalDBListLiveData: LiveData<List<UserInfoHolderModel>>
+        get() = _soloRankTop10AtLocalDBListLiveData
 
-    private val _userInfoListLiveData = MutableLiveData<List<UserInfoHolderModel>>()
-    val userInfoListLiveData: LiveData<List<UserInfoHolderModel>>
-        get() = _userInfoListLiveData
-
-    var rankingRoomDBLoad = false
+    private val _soloRankTop10ListFromServerLiveData = MutableLiveData<List<UserInfoHolderModel>>()
+    val soloRankTop10ListFromServerLiveData: LiveData<List<UserInfoHolderModel>>
+        get() = _soloRankTop10ListFromServerLiveData
 
     fun getRankingDataFromServer() {
         val checkMinTimeForGetRankingData =
@@ -111,7 +109,7 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
                             }
                     }
 
-                    _userInfoListLiveData.postValue(rankList)
+                    _soloRankTop10ListFromServerLiveData.postValue(rankList)
                 } catch (e: ConnectException) {
                     e.printStackTrace()
                 } catch (e: java.lang.Exception) {
@@ -128,11 +126,9 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
                 rankList.add(UserInfoHolderModel(userInfo))
             }
             if(rankList.isNotEmpty()) {
-                rankingRoomDBLoad = true
+                rankList.sortWith(compareBy { userModel -> userModel.userInfo.rank })
+                _soloRankTop10AtLocalDBListLiveData.postValue(rankList)
             }
-            rankList.sortWith(compareBy { userModel -> userModel.userInfo.rank })
-
-            _userInfoAtLocalDBListLiveData.postValue(rankList)
         }
     }
 

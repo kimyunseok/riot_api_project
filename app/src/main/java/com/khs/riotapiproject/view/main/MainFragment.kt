@@ -15,7 +15,7 @@ import com.khs.riotapiproject.util.UserInfoHolderModelDiffUtil
 import com.khs.riotapiproject.view.base.BaseFragmentForViewBinding
 import com.khs.riotapiproject.view.info.ChampionListFragment
 import com.khs.riotapiproject.viewmodel.aac.ChampionInfoViewModel
-import com.khs.riotapiproject.viewmodel.aac.UserInfoViewModel
+import com.khs.riotapiproject.viewmodel.aac.UserSoloRankTop10ViewModel
 import com.khs.riotapiproject.viewmodel.repository.MyRepository
 import com.khs.riotapiproject.viewmodel.ui.ChampionIconHolderModel
 import com.khs.riotapiproject.viewmodel.ui.MainNavigationHolderModel
@@ -26,7 +26,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     override val layoutID: Int
         get() = R.layout.fragment_main
 
-    private val userInfoViewModel: UserInfoViewModel by viewModels { MyRepositoryViewModelFactory(MyRepository()) }
+    private val userSoloRankTop10ViewModel: UserSoloRankTop10ViewModel by viewModels { MyRepositoryViewModelFactory(MyRepository()) }
     private val championInfoViewModel: ChampionInfoViewModel by viewModels { MyRepositoryViewModelFactory(MyRepository()) }
 
     lateinit var rankingRecyclerViewAdapter: SoloRankingRecyclerViewAdapter
@@ -72,31 +72,31 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         }
 
         // 랭킹 정보 저장돼 있던 것 보여주기.
-        userInfoViewModel.userInfoAtLocalDBListLiveData.observe(viewLifecycleOwner) {
+        userSoloRankTop10ViewModel.soloRankTop10AtLocalDBListLiveData.observe(viewLifecycleOwner) {
             setUpRankingRecyclerView(it)
         }
 
         // 랭킹 정보 서버에서 불러온 데이터
-        userInfoViewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
+        userSoloRankTop10ViewModel.rankingDataLiveData.observe(viewLifecycleOwner) {
                 rankingData ->
             if(rankingData != null && rankingData.code == 200) {
-                userInfoViewModel.getRankingUserInfoListByRankingDataFromServer()
+                userSoloRankTop10ViewModel.getRankingUserInfoListByRankingDataFromServer()
             } else {
                 //Can't Get Ranking List
                 Toast.makeText(context, context?.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
             }
         }
 
-        userInfoViewModel.userInfoListLiveData.observe(viewLifecycleOwner) {
+        userSoloRankTop10ViewModel.soloRankTop10ListFromServerLiveData.observe(viewLifecycleOwner) {
             // 불러온 랭킹 정보의 id로 유저 정보(icon, Level) 불러온 후 리사이클러뷰 셋팅
-            if(userInfoViewModel.rankingRoomDBLoad.not()) {
+            if(viewDataBinding.soloRankRecyclerView.adapter == null) {
                 setUpRankingRecyclerView(it)
             } else {
                 refreshRankingRecyclerView(it)
             }
 
             // 불러온 랭킹 정보 이미지는 캐시에 저장하고 유저 정보는 Room DB에 저장
-            userInfoViewModel.clearUserInfoAtLocalDB()
+            userSoloRankTop10ViewModel.clearUserInfoAtLocalDB()
 
             for(data in it) {
                 // 유저 아이콘 캐싱
@@ -115,7 +115,7 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                 }
 
                 // 유저 정보 Room DB에 저장(캐싱)
-                userInfoViewModel.saveUserInfoAtLocalDB(data.userInfo)
+                userSoloRankTop10ViewModel.saveUserInfoAtLocalDB(data.userInfo)
             }
         }
 
@@ -126,11 +126,11 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
     }
 
     private fun getRankingDataAtLocalDB() {
-        userInfoViewModel.getRankingDataFromLocalDB()
+        userSoloRankTop10ViewModel.getRankingDataFromLocalDB()
     }
 
     private fun getRankingData() {
-        userInfoViewModel.getRankingDataFromServer()
+        userSoloRankTop10ViewModel.getRankingDataFromServer()
     }
 
     private fun setRotationList() {
@@ -203,7 +203,5 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
         viewDataBinding.mainDrawerLayout.closeDrawer(GravityCompat.START)
         Toast.makeText(context, context?.getString(R.string.ready_job), Toast.LENGTH_SHORT).show()
     }
-
-
 
 }
