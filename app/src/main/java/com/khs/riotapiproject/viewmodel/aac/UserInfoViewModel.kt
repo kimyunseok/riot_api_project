@@ -28,10 +28,10 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
     val freeRankWinRatio: LiveData<String>
         get() = _freeRankWinRatio
 
-    private val _soloRankTierFormat = MutableLiveData<String>()
+    private val _soloRankTierFormat = MutableLiveData("랭크 정보가 없습니다.")
     val soloRankTierFormat: LiveData<String>
         get() = _soloRankTierFormat
-    private val _freeRankTierFormat = MutableLiveData<String>()
+    private val _freeRankTierFormat = MutableLiveData("랭크 정보가 없습니다.")
     val freeRankTierFormat: LiveData<String>
         get() = _freeRankTierFormat
 
