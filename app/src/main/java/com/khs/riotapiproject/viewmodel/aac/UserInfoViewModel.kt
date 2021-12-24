@@ -42,6 +42,10 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
     val freeRankTierImage: LiveData<Int>
         get() = _freeRankTierImage
 
+    private val _errorCodeLiveData = MutableLiveData<Int>()
+    val errorCodeLiveData: LiveData<Int>
+        get() = _errorCodeLiveData
+
     fun getUserInfoBySummonerName(summonerName: String) {
         val checkMinTimeForGetSummonerData =
             System.currentTimeMillis() - GlobalApplication.mySharedPreferences.getLong("get${summonerName}Info", 0) > 120000
@@ -52,103 +56,110 @@ class UserInfoViewModel(private val myRepository: MyRepository): ViewModel() {
                 myRepository.getSummonerInfoByName(summonerName).let { summonerInfoResponse ->
 
                     Log.d("UserInfoViewModel", "GET User Info By Summoner Name code : ${summonerInfoResponse.code()}, message : ${summonerInfoResponse.message()}")
-                    // 유저의 리그 정보
-                    summonerInfoResponse.body()?.let { summonerInfo ->
-                        myRepository.getSummonerLeagueInfoById(summonerInfo.id)
-                            .let { leagueInfoResponse ->
-                                Log.d("UserInfoViewModel", "GET League Info By Summoner Name code : ${leagueInfoResponse.code()}, message : ${leagueInfoResponse.message()}")
 
-                                leagueInfoResponse.body()?.let { leagueInfo ->
-                                    myRepository.deleteUserInfoBySummonerName(summonerName)
+                    if(summonerInfoResponse.code() == 200) {
+                        // 유저의 리그 정보
+                        summonerInfoResponse.body()?.let { summonerInfo ->
+                            myRepository.getSummonerLeagueInfoById(summonerInfo.id)
+                                .let { leagueInfoResponse ->
+                                    Log.d("UserInfoViewModel", "GET League Info By Summoner Name code : ${leagueInfoResponse.code()}, message : ${leagueInfoResponse.message()}")
 
-                                    val userInfo = when {
-                                        leagueInfo.isEmpty() -> {
-                                            UserInfo(
-                                                0,
-                                                summonerInfo.id,
-                                                summonerInfo.profileIconId,
-                                                summonerName,
-                                                summonerInfo.summonerLevel,
-                                                "NO_TIER",
-                                                "",
-                                                0,
-                                                0,
-                                                0,
-                                                "NO_TIER",
-                                                "",
-                                                0,
-                                                0,
-                                                0,
-                                            )
+                                    leagueInfoResponse.body()?.let { leagueInfo ->
+                                        myRepository.deleteUserInfoBySummonerName(summonerName)
+
+                                        val userInfo = when {
+                                            leagueInfo.isEmpty() || leagueInfo[0].tier == null -> {
+                                                UserInfo(
+                                                    0,
+                                                    summonerInfo.id,
+                                                    summonerInfo.profileIconId,
+                                                    summonerName,
+                                                    summonerInfo.summonerLevel,
+                                                    "NO_TIER",
+                                                    "",
+                                                    0,
+                                                    0,
+                                                    0,
+                                                    "NO_TIER",
+                                                    "",
+                                                    0,
+                                                    0,
+                                                    0,
+                                                )
+                                            }
+                                            leagueInfo.size == 1 || leagueInfo[1].tier == null -> {
+                                                UserInfo(
+                                                    0,
+                                                    summonerInfo.id,
+                                                    summonerInfo.profileIconId,
+                                                    summonerName,
+                                                    summonerInfo.summonerLevel,
+                                                    leagueInfo[0].tier.toString(),
+                                                    leagueInfo[0].rank.toString(),
+                                                    leagueInfo[0].leaguePoints,
+                                                    leagueInfo[0].wins,
+                                                    leagueInfo[0].losses,
+                                                    "NO_TIER",
+                                                    "",
+                                                    0,
+                                                    0,
+                                                    0,
+                                                )
+                                            }
+                                            else -> {
+                                                UserInfo(
+                                                    0,
+                                                    summonerInfo.id,
+                                                    summonerInfo.profileIconId,
+                                                    summonerName,
+                                                    summonerInfo.summonerLevel,
+                                                    leagueInfo[0].tier.toString(),
+                                                    leagueInfo[0].rank.toString(),
+                                                    leagueInfo[0].leaguePoints,
+                                                    leagueInfo[0].wins,
+                                                    leagueInfo[0].losses,
+                                                    leagueInfo[1].tier.toString(),
+                                                    leagueInfo[1].rank.toString(),
+                                                    leagueInfo[1].leaguePoints,
+                                                    leagueInfo[1].wins,
+                                                    leagueInfo[1].losses
+                                                )
+                                            }
                                         }
-                                        leagueInfo.size == 1 -> {
-                                            UserInfo(
-                                                0,
-                                                summonerInfo.id,
-                                                summonerInfo.profileIconId,
-                                                summonerName,
-                                                summonerInfo.summonerLevel,
-                                                leagueInfo[0].tier,
-                                                leagueInfo[0].rank,
+
+                                        if(leagueInfo.isNotEmpty() && leagueInfo[0].tier != null) {
+                                            setSoloRankTierFormat(
+                                                leagueInfo[0].tier.toString(),
+                                                leagueInfo[0].rank.toString(),
                                                 leagueInfo[0].leaguePoints,
                                                 leagueInfo[0].wins,
-                                                leagueInfo[0].losses,
-                                                "NO_TIER",
-                                                "",
-                                                0,
-                                                0,
-                                                0,
+                                                leagueInfo[0].losses
                                             )
                                         }
-                                        else -> {
-                                            UserInfo(
-                                                0,
-                                                summonerInfo.id,
-                                                summonerInfo.profileIconId,
-                                                summonerName,
-                                                summonerInfo.summonerLevel,
-                                                leagueInfo[0].tier,
-                                                leagueInfo[0].rank,
-                                                leagueInfo[0].leaguePoints,
-                                                leagueInfo[0].wins,
-                                                leagueInfo[0].losses,
-                                                leagueInfo[1].tier,
-                                                leagueInfo[1].rank,
+
+                                        if(leagueInfo.size > 1 && leagueInfo[1].tier != null) {
+                                            setFreeRankTierFormat(
+                                                leagueInfo[1].tier.toString(),
+                                                leagueInfo[1].rank.toString(),
                                                 leagueInfo[1].leaguePoints,
                                                 leagueInfo[1].wins,
                                                 leagueInfo[1].losses
                                             )
                                         }
+
+                                        GlobalApplication.mySharedPreferences.setLong("get${summonerName}Info", System.currentTimeMillis())
+
+                                        setSummonerLevelFormat(summonerInfo.summonerLevel)
+                                        myRepository.insertUserInfo(userInfo)
+                                        _userInfoLiveData.postValue(userInfo)
                                     }
-
-                                    if(leagueInfo.isNotEmpty()) {
-                                        setSoloRankTierFormat(
-                                            leagueInfo[0].tier,
-                                            leagueInfo[0].rank,
-                                            leagueInfo[0].leaguePoints,
-                                            leagueInfo[0].wins,
-                                            leagueInfo[0].losses
-                                        )
-                                    }
-
-                                    if(leagueInfo.size > 1) {
-                                        setFreeRankTierFormat(
-                                            leagueInfo[1].tier,
-                                            leagueInfo[1].rank,
-                                            leagueInfo[1].leaguePoints,
-                                            leagueInfo[1].wins,
-                                            leagueInfo[1].losses
-                                        )
-                                    }
-
-                                    GlobalApplication.mySharedPreferences.setLong("get${summonerName}Info", System.currentTimeMillis())
-
-                                    setSummonerLevelFormat(summonerInfo.summonerLevel)
-                                    myRepository.insertUserInfo(userInfo)
-                                    _userInfoLiveData.postValue(userInfo)
                                 }
-                            }
+                        }
+                    } else {
+                        // 200번 아니라면 에러발생. 검색 실패.
+                        _errorCodeLiveData.postValue(summonerInfoResponse.code())
                     }
+
                 }
             }
         }

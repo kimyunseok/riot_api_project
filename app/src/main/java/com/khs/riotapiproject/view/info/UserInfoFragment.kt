@@ -1,5 +1,6 @@
 package com.khs.riotapiproject.view.info
 
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.khs.riotapiproject.R
 import com.khs.riotapiproject.databinding.FragmentUserInfoBinding
@@ -19,7 +20,18 @@ class UserInfoFragment: BaseFragmentForViewBinding<FragmentUserInfoBinding>() {
     override fun init() {
         viewDataBinding.viewModel = userInfoViewModel
 
+        setUpObserver()
         getUserInfoByName()
+    }
+
+    private fun setUpObserver() {
+        userInfoViewModel.errorCodeLiveData.observe(viewLifecycleOwner) {
+            if(it == 404) {
+                Toast.makeText(context, context?.getString(R.string.no_found), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, context?.getString(R.string.error_occur), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun getUserInfoByName() {

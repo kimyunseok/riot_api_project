@@ -79,9 +79,9 @@ data class SummonerLeagueInfoDetailData(
     @SerializedName("queueType")
     val queueType: String,
     @SerializedName("tier")
-    val tier: String,
+    val tier: String?,
     @SerializedName("rank")
-    val rank: String,
+    val rank: String?,
     @SerializedName("summonerId")
     val summonerId: String,
     @SerializedName("summonerName")

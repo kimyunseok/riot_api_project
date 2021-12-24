@@ -2,6 +2,7 @@
     <string name="app_name">RiotAPIProject</string>
     <string name="lol_version">11.24.1</string>
     <string name="lol_region">KR</string>
+    <string name="error_occur">에러가 발생했습니다.</string>
 
     <!-- Splash -->
     <string name="splash_loading">로딩 중입니다.</string>
@@ -33,5 +34,6 @@
     <!-- User Info -->
     <string name="solo_rank">솔로 랭크</string>
     <string name="free_rank">자유 랭크</string>
+    <string name="no_found">해당하는 소환사를 찾지 못했습니다.</string>
 
 </resources>
