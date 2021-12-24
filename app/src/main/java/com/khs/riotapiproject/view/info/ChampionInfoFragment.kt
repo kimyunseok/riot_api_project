@@ -33,10 +33,9 @@ class ChampionInfoFragment: BaseFragmentForViewBinding<FragmentChampionInfoBindi
                 if(ImageSaveUtil(mContext).checkAlreadySaved(it.championId, type).not()) {
                     ImageSaveUtil(mContext)
                         .imageToCache(
-                            it.championId,
+                            it.championId + "_0",
                             mContext.getString(R.string.champion_loading_image_url),
-                            type,
-                            "_0"
+                            type
                         )
                 }
             }

@@ -19,10 +19,10 @@ import java.net.URL
 
 class ImageSaveUtil(val context: Context) {
 
-    fun imageToCache(nameOrID: String, url: String, type: String, addName: String) {
+    fun imageToCache(nameOrID: String, url: String, type: String) {
         CoroutineScope(Dispatchers.IO).launch {
             // 최신버전 정보는 https://ddragon.leagueoflegends.com/api/versions.json 에서 확인가능.
-            val iconURL =  "${url}${nameOrID}${addName}.${type}"
+            val iconURL =  "${url}${nameOrID}.${type}"
             try {
                 val inputStream = URL(iconURL).openStream()
                 val bitmap = BitmapFactory.decodeStream(inputStream)

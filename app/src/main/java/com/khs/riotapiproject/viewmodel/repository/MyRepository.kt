@@ -21,7 +21,7 @@ class MyRepository {
     suspend fun getRotationChampionList() = riotRetrofit.getRotationChampionList()
 
     //Retrofit2, DDragon API 호출
-    suspend fun getAllChampionData() = ddragonRetrofit.getAllChampionData()
+    suspend fun getAllChampionData(version: String) = ddragonRetrofit.getAllChampionData(version)
 
     // User - SQLite
     fun getAllUserInfo() = userInfoDB.getAllUserInfo()

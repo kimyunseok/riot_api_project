@@ -31,7 +31,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="6dp"
             app:imageName="@{String.valueOf(model.iconID)}"
-            app:imageURL="@{@string/profile_icon_url}"
+            app:imageURL="@{@string/profile_icon_url_front + @string/lol_version + @string/profile_icon_url_back}"
             app:imageType="@{@string/png}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

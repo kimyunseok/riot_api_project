@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:imageName="@{model.championInfo.championId}"
-            app:imageURL="@{@string/champion_icon_url}"
+            app:imageURL="@{@string/champion_icon_url_front + @string/lol_version + @string/champion_icon_url_back}"
             app:imageType="@{@string/png}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

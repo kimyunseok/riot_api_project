@@ -57,9 +57,10 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                         ImageSaveUtil(mContext)
                             .imageToCache(
                                 data.championInfo.championId,
-                                mContext.getString(R.string.champion_icon_url),
-                                type,
-                                ""
+                                mContext.getString(R.string.champion_icon_url_front)
+                                        + mContext.getString(R.string.lol_version)
+                                        + mContext.getString(R.string.champion_icon_url_back),
+                                type
                             )
                     }
                 }
@@ -105,9 +106,10 @@ class MainFragment: BaseFragmentForViewBinding<FragmentMainBinding>() {
                         ImageSaveUtil(mContext)
                             .imageToCache(
                                 data.getIconID().toString(),
-                                mContext.getString(R.string.profile_icon_url),
-                                type,
-                                ""
+                                mContext.getString(R.string.profile_icon_url_front)
+                                        + mContext.getString(R.string.lol_version)
+                                        + mContext.getString(R.string.profile_icon_url_back),
+                                type
                             )
                     }
                 }

@@ -102,7 +102,7 @@ class ChampionInfoViewModel(private val myRepository: MyRepository): ViewModel()
         if (checkVersionForGetChampionData) {
             myRepository.clearChampionInfo()
             CoroutineScope(Dispatchers.IO).launch {
-                myRepository.getAllChampionData().let {
+                myRepository.getAllChampionData(version).let {
                         response ->
                     Log.d("ChampionInfoViewModel", "Get All Champion DATA API. code : ${response.code()}, message : ${response.message()}")
 
