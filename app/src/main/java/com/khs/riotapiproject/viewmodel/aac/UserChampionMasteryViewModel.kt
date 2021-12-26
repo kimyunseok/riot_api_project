@@ -77,7 +77,10 @@ class UserChampionMasteryViewModel(private val myRepository: MyRepository): View
 
                                             myRepository.insertChampionMastery(championMastery)
                                         }
-
+                                        GlobalApplication.mySharedPreferences.setLong(
+                                            "get${summonerName}ChampionMastery",
+                                            System.currentTimeMillis()
+                                        )
                                         _mostChampionListLiveData.postValue(mostChampionList)
                                     }
                                 }
